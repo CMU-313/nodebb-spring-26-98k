@@ -58,7 +58,11 @@
 	</li>
 
 	<li class="dropdown-divider"></li>
-
+	<li>
+		<a component="topic/mark-endorsed" href="#" class="dropdown-item rounded-1 d-flex align-items-center gap-2" role="menuitem">
+			<i class="fa fa-fw fa-check-circle text-secondary"></i> [[topic:thread-tools.mark-endorsed]]
+		</a>
+	</li>
 	<li>
 		<a component="topic/delete" href="#" class="dropdown-item rounded-1 d-flex align-items-center gap-2" role="menuitem">
 			<i class="fa fa-fw fa-trash-o text-secondary"></i> [[topic:thread-tools.delete]]
