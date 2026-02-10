@@ -238,8 +238,6 @@ get:
                           type: string
                         latest:
                           type: string
-                        url:
-                          type: string
                         numInstalls:
                           type: number
                         isCompatible:
