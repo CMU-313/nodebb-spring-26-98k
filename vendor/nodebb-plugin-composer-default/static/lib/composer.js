@@ -44,7 +44,7 @@ define('composer', [
 	$(document).off('click.staffOnly').on('click.staffOnly', '#staff-only-btn', function (e) {
 		e.preventDefault();
 		console.log('Staff-only button clicked!');
-		alerts.success('Staff-only button clicked!');
+		alerts.success('Staff-only clicked!');
 	});
 
 	$(window).on('popstate', function () {
