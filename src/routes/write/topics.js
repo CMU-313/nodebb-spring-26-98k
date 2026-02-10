@@ -23,7 +23,7 @@ module.exports = function () {
 
 	setupApiRoute(router, 'put', '/:tid/lock', [...middlewares], controllers.write.topics.lock);
 	setupApiRoute(router, 'delete', '/:tid/lock', [...middlewares], controllers.write.topics.unlock);
-
+	
 	setupApiRoute(router, 'put', '/:tid/follow', [...middlewares, middleware.assert.topic], controllers.write.topics.follow);
 	setupApiRoute(router, 'delete', '/:tid/follow', [...middlewares, middleware.assert.topic], controllers.write.topics.unfollow);
 	setupApiRoute(router, 'put', '/:tid/ignore', [...middlewares, middleware.assert.topic], controllers.write.topics.ignore);
@@ -54,6 +54,8 @@ module.exports = function () {
 
 	setupApiRoute(router, 'put', '/:tid/move', [...middlewares, middleware.assert.topic], controllers.write.topics.move);
 
+	setupApiRoute(router, 'put', '/:tid/status', [...middlewares, middleware.checkRequired.bind(null, ['status']), middleware.assert.topic], controllers.write.topics.updateStatus);
+	
 	setupApiRoute(router, 'get', '/:tid/crossposts', [...middlewares, middleware.assert.topic], controllers.write.topics.getCrossposts);
 	setupApiRoute(router, 'post', '/:tid/crossposts', [...middlewares, middleware.assert.topic], controllers.write.topics.crosspost);
 	setupApiRoute(router, 'delete', '/:tid/crossposts', [...middlewares, middleware.assert.topic], controllers.write.topics.uncrosspost);

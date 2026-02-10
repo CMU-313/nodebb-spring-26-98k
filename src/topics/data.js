@@ -148,4 +148,15 @@ function modifyTopic(topic, fields) {
 			topic.thumbs = [];
 		}
 	}
+
+	if (fields.includes('status') || !fields.length) {
+		// Set default status if not present
+		topic.status = topic.status || 'unanswered';
+		
+		// Validate status values
+		const validStatuses = ['unanswered', 'answered', 'resolved'];
+		if (!validStatuses.includes(topic.status)) {
+			topic.status = 'unanswered';
+		}
+	}
 }

@@ -346,3 +346,39 @@ topicsAPI.move = async (caller, { tid, cid }) => {
 
 	await categories.onTopicsMoved(cids);
 };
+
+topicsAPI.updateStatus = async function (caller, data) {
+	// Check if we have the required data
+	if (!data || !data.tid || !data.status) {
+		throw new Error('[[error:invalid-data]]');
+	}
+
+	const { tid, status } = data;
+
+	// Check if user has permission to edit this topic
+	const canEdit = await privileges.topics.canEdit(tid, caller.uid);
+	if (!canEdit) {
+		throw new Error('[[error:no-privileges]]');
+	}
+
+	// Validate the status value
+	const validStatuses = ['unanswered', 'answered', 'resolved'];
+	if (!validStatuses.includes(status)) {
+		throw new Error('[[error:invalid-status]]');
+	}
+
+	// Update the status
+	await topics.setStatus(tid, status);
+
+	// Log the event
+	await events.log({
+		type: 'topic-status-change',
+		uid: caller.uid,
+		ip: caller.ip,
+		tid: tid,
+		status: status,
+	});
+
+	// Return the new status
+	return { status: status };
+};

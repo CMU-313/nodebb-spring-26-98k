@@ -331,4 +331,26 @@ Topics.search = async function (tid, term) {
 	return Array.isArray(result) ? result : result.ids;
 };
 
+Topics.setStatus = async function (tid, status) {
+	const validStatuses = ['unanswered', 'answered', 'resolved'];
+	if (!validStatuses.includes(status)) {
+		throw new Error('[[error:invalid-status]]');
+	}
+	await Topics.setTopicField(tid, 'status', status);
+	await plugins.hooks.fire('action:topic.setStatus', { tid: tid, status: status });
+};
+
+Topics.getStatus = async function (tid) {
+	const status = await Topics.getTopicField(tid, 'status');
+	return status || 'unanswered';
+};
+
+Topics.getTopicsStatus = async function (tids) {
+	if (!Array.isArray(tids) || !tids.length) {
+		return [];
+	}
+	const topics = await Topics.getTopicsFields(tids, ['status']);
+	return topics.map(topic => topic && topic.status ? topic.status : 'unanswered');
+};
+
 require('../promisify')(Topics);
