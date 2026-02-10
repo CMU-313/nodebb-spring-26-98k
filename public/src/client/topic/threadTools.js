@@ -60,14 +60,14 @@ define('forum/topic/threadTools', [
 			topicCommand('del', '/pin', 'unpin');
 			return false;
 		});
-
+		
 		topicContainer.on('click', '[component="topic/mark-endorsed"]', function () {
-			topicCommand('put', '/endorse', undefined, () => {
-				alerts.success('[[topic:mark-endorsed.success]]');
+				topicCommand('put', '/endorse', undefined, () => {
+					alerts.success('[[topic:mark-endorsed.success]]');
+				});
+				
+				return false;
 			});
-			
-			return false;
-		});
 
 		topicContainer.on('click', '[component="topic/mark-unread"]', function () {
 			topicCommand('del', '/read', undefined, () => {
