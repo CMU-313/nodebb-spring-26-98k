@@ -44,6 +44,24 @@ plugin.addAdminNavigation = async function (header) {
 	return header;
 };
 
+plugin.addPrefetchTags = async function (hookData) {
+	const prefetch = [
+		'/assets/src/modules/composer.js', '/assets/src/modules/composer/uploads.js', '/assets/src/modules/composer/drafts.js',
+		'/assets/src/modules/composer/tags.js', '/assets/src/modules/composer/categoryList.js', '/assets/src/modules/composer/resize.js',
+		'/assets/src/modules/composer/autocomplete.js', '/assets/templates/composer.tpl',
+		`/assets/language/${meta.config.defaultLang || 'en-GB'}/topic.json`,
+		`/assets/language/${meta.config.defaultLang || 'en-GB'}/modules.json`,
+		`/assets/language/${meta.config.defaultLang || 'en-GB'}/tags.json`,
+	];
+
+	hookData.links = hookData.links.concat(prefetch.map(path => ({
+		rel: 'prefetch',
+		href: `${nconf.get('relative_path') + path}?${meta.config['cache-buster']}`,
+	})));
+
+	return hookData;
+};
+
 plugin.getFormattingOptions = async function () {
 	const defaultVisibility = {
 		mobile: true,
@@ -99,7 +117,8 @@ plugin.getFormattingOptions = async function () {
 };
 
 plugin.filterComposerBuild = async function (hookData) {
-	const { req, res } = hookData;
+	const { req } = hookData;
+	const { res } = hookData;
 
 	if (req.query.p) {
 		try {
@@ -159,9 +178,7 @@ plugin.filterComposerBuild = async function (hookData) {
 	}
 	globalPrivileges['topics:tag'] = canTagTopics;
 	const cid = parseInt(req.query.cid, 10);
-	const topicTitle = topicData && topicData.title ?
-		topicData.title :
-		validator.escape(String(req.query.title || ''));
+	const topicTitle = topicData && topicData.title ? topicData.title.replace(/%/g, '&#37;').replace(/,/g, '&#44;') : validator.escape(String(req.query.title || ''));
 	return {
 		req: req,
 		res: res,
@@ -180,13 +197,6 @@ plugin.filterComposerBuild = async function (hookData) {
 			// can't use title property as that is used for page title
 			topicTitle: topicTitle,
 			titleLength: topicTitle ? topicTitle.length : 0,
-			titleLabel: translator.compile(
-				isEditing ?
-					'topic:composer.editing-in' :
-					'topic:composer.replying-to',
-				`"${topicTitle}"`
-			),
-
 			topic: topicData,
 			thumb: topicData ? topicData.thumb : '',
 			body: body,

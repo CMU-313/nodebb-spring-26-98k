@@ -12,7 +12,7 @@
 			</div>
 			{{{ end }}}
 			{{{ if !isTopicOrMain }}}
-			<h4 class="title text-bg-primary">{titleLabel}</h4>
+			<h4 class="title text-bg-primary">{{{ if isEditing }}}[[topic:composer.editing-in, "{topicTitle}"]]{{{ else }}}[[topic:composer.replying-to, "{topicTitle}"]]{{{ end }}}</h4>
 			{{{ end }}}
 			<div class="display-scheduler p-2 {{{ if !canSchedule }}} hidden{{{ end }}}">
 				<i class="fa fa-clock-o"></i>
@@ -23,8 +23,14 @@
 		</nav>
 		<div class="p-2 d-flex flex-column gap-1 h-100">
 			<!-- IMPORT partials/composer-title-container.tpl -->
-
+			
 			<!-- IMPORT partials/composer-formatting.tpl -->
+
+			<div class="d-flex align-items-center gap-2">
+  				<button type="button" id="staff-only-btn" class="btn btn-sm btn-light"> 
+    				<i class="fa fa-eye-slash"></i> Staff-only
+  					</button>
+			</div>
 
 			<!-- IMPORT partials/composer-write-preview.tpl -->
 
