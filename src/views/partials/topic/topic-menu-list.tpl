@@ -15,6 +15,12 @@
 	<a component="topic/unpin" href="#" class="dropdown-item rounded-1 d-flex align-items-center gap-2 {{{ if !pinned }}}hidden{{{ end }}}" role="menuitem"><i class="fa fa-fw fa-thumb-tack fa-rotate-90 text-secondary"></i> [[topic:thread-tools.unpin]]</a>
 </li>
 
+<li>
+	<a component="topic/endorse" href="#" class="dropdown-item rounded-1 d-flex align-items-center gap-2" role="menuitem">
+		<i class="fa fa-fw fa-check-circle text-secondary"></i> Mark Endorsed
+	</a>
+</li>
+
 {{{ if isNumber(cid) }}}
 <li>
 	<a component="topic/move" href="#" class="dropdown-item rounded-1 d-flex align-items-center gap-2" role="menuitem"><i class="fa fa-fw fa-arrows text-secondary"></i> [[topic:thread-tools.move]]</a>
@@ -42,6 +48,7 @@
 <li>
 	<a component="topic/mark-unread-for-all" href="#" class="dropdown-item rounded-1 d-flex align-items-center gap-2" role="menuitem"><i class="fa fa-fw fa-inbox text-secondary"></i> [[topic:thread-tools.markAsUnreadForAll]]</a>
 </li>
+
 
 <li class="dropdown-divider"></li>
 {{{ end }}}
