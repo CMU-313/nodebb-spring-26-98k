@@ -81,6 +81,7 @@
     "composer.show-preview": "عرض المعاينة",
     "composer.hide-preview": "إخفاء المعاينة",
     "composer.help": "Help",
+    "composer.anonymous-toggle": "Post anonymously",
     "composer.user-said-in": "%1 كتب في  %2",
     "composer.user-said": "%1 كتب:",
     "composer.discard": "هل أنت متأكد أنك تريد التخلي عن التغييرات؟",
