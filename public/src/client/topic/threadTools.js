@@ -61,9 +61,9 @@ define('forum/topic/threadTools', [
 			return false;
 		});
 		
-		topicContainer.on('click', '[component="topic/mark-endorsed"]', function () {
+		topicContainer.on('click', '[component="topic/endorse"]', function () {
 			topicCommand('put', '/endorse', undefined, () => {
-				alerts.success('[[topic:mark-endorsed.success]]');
+				alerts.success('[[topic:endorse.success]]');
 			});
 			return false;
 		});
