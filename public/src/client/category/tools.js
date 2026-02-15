@@ -56,6 +56,16 @@ define('forum/category/tools', [
 			return false;
 		});
 
+		components.get('topic/endorse').on('click', function () {
+			categoryCommand('put', '/endorse', 'endorse', onCommandComplete);
+			return false;
+		});
+
+		components.get('topic/unendorse').on('click', function () {
+			categoryCommand('del', '/unendorse', 'unendorse', onCommandComplete);
+			return false;
+		});
+
 		// todo: should also use categoryCommand, but no write api call exists for this yet
 		components.get('topic/mark-unread-for-all').on('click', function () {
 			const tids = topicSelect.getSelectedTids();
@@ -136,6 +146,8 @@ define('forum/category/tools', [
 		socket.on('event:topic_unlocked', setLockedState);
 		socket.on('event:topic_pinned', setPinnedState);
 		socket.on('event:topic_unpinned', setPinnedState);
+		socket.on('event:topic_endorsed', setEndorsedState);
+		socket.on('event:topic_unendorsed', setEndorsedState);
 		socket.on('event:topic_moved', onTopicMoved);
 	};
 
@@ -182,6 +194,8 @@ define('forum/category/tools', [
 		socket.removeListener('event:topic_unlocked', setLockedState);
 		socket.removeListener('event:topic_pinned', setPinnedState);
 		socket.removeListener('event:topic_unpinned', setPinnedState);
+		socket.removeListener('event:topic_endorsed', setEndorsedState);
+		socket.removeListener('event:topic_unendorsed', setEndorsedState);
 		socket.removeListener('event:topic_moved', onTopicMoved);
 	};
 
@@ -275,6 +289,13 @@ define('forum/category/tools', [
 		const topic = getTopicEl(data.tid);
 		topic.toggleClass('pinned', data.isPinned);
 		topic.find('[component="topic/pinned"]').toggleClass('hidden', !data.isPinned);
+		ajaxify.refresh();
+	}
+
+	function setEndorsedState(data) {
+		const topic = getTopicEl(data.tid);
+		topic.toggleClass('endorsed', data.isEndorsed);
+		topic.find('[component="topic/endorsed"]').toggleClass('hidden', !data.isEndorsed);
 		ajaxify.refresh();
 	}
 
