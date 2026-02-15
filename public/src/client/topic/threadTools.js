@@ -62,8 +62,16 @@ define('forum/topic/threadTools', [
 		});
 		
 		topicContainer.on('click', '[component="topic/endorse"]', function () {
+			console.log('tid:', ajaxify.data.tid);
 			topicCommand('put', '/endorse', undefined, () => {
 				alerts.success('[[topic:endorse.success]]');
+			});
+			return false;
+		});
+
+		topicContainer.on('click', '[component="topic/unendorse"]', function () {
+			topicCommand('del', '/endorse', undefined, () => {
+				alerts.success('[[topic:unendorse.success]]');
 			});
 			return false;
 		});
@@ -398,6 +406,26 @@ define('forum/topic/threadTools', [
 		}
 		ajaxify.data.pinned = data.pinned;
 
+		posts.addTopicEvents(data.events);
+	};
+
+	ThreadTools.setEndorsedState = function (data) {
+		const threadEl = components.get('topic');
+		if (String(data.tid) !== threadEl.attr('data-tid')) {
+			return;
+		}
+	
+		// Toggle menu items (Endorse vs Unendorse)
+		components.get('topic/endorse').toggleClass('hidden', data.endorsed).parent().attr('hidden', data.endorsed ? '' : null);
+		components.get('topic/unendorse').toggleClass('hidden', !data.endorsed).parent().attr('hidden', !data.endorsed ? '' : null);
+		const icon = $('[component="topic/labels"] [component="topic/endorsed"]');
+		icon.toggleClass('hidden', !data.endorsed);
+		if (data.endorsed) {
+			icon.translateAttr('title', '[[topic:endorsed]]');
+		}
+	
+		ajaxify.data.endorsed = data.endorsed;
+	
 		posts.addTopicEvents(data.events);
 	};
 

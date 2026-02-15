@@ -110,6 +110,15 @@ module.exports = function (Topics) {
 		return topicData;
 	}
 
+	topicTools.endorse = async function (tid, uid) {
+		console.log('topicTools.endorse is called');
+		return await toggleEndorse(tid, uid, true);
+	};
+
+	topicTools.unendorse = async function (tid, uid) {
+		return await toggleEndorse(tid, uid, false);
+	};
+
 	topicTools.pin = async function (tid, uid) {
 		return await togglePin(tid, uid, true);
 	};
@@ -148,6 +157,36 @@ module.exports = function (Topics) {
 
 		return tids.filter(Boolean);
 	};
+
+	async function (tid, uid, endorse) {
+		const topicData = await Topics.getTopicData(tid);
+		if (!topicData) {
+			throw new Error('[[error:no-topic]]');
+		}
+	
+		// optional: you can allow/disallow endorsing scheduled topics
+		if (topicData.scheduled) {
+			throw new Error('[[error:invalid-data]]');
+		}
+	
+		// same permission logic as pin/unpin
+		if (uid !== 'system' && !await privileges.topics.isAdminOrMod(tid, uid)) {
+			throw new Error('[[error:no-privileges]]');
+		}
+	
+		const results = await Promise.all([
+			Topics.setTopicField(tid, 'endorsed', endorse ? 1 : 0),
+			Topics.events.log(tid, { type: endorse ? 'endorse' : 'unendorse', uid }),
+		]);
+	
+		// add the state into returned object (frontend depends on this)
+		topicData.endorsed = endorse;
+		topicData.events = results[1];
+	
+		plugins.hooks.fire('action:topic.endorse', { topic: _.clone(topicData), uid });
+	
+		return topicData;
+	}
 
 	async function togglePin(tid, uid, pin) {
 		const topicData = await Topics.getTopicData(tid);
