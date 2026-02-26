@@ -50,7 +50,7 @@ module.exports = function (Posts) {
 			// toPid is nullable so it is casted separately
 			post.toPid = utils.isNumber(post.toPid) ? parseInt(post.toPid, 10) : post.toPid;
 
-			post.user = uidToUser[post.uid];
+			post.user = { ...(uidToUser[post.uid] || {}) };
 			Posts.overrideGuestHandle(post, post.handle);
 			Posts.applyAnonymousHandle(post, uid);
 			post.handle = undefined;

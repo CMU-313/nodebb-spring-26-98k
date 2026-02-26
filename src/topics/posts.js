@@ -135,7 +135,7 @@ module.exports = function (Topics) {
 
 		postData.forEach((postObj, i) => {
 			if (postObj) {
-				postObj.user = postObj.uid ? userData[postObj.uid] : { ...userData[postObj.uid] };
+				postObj.user = { ...(userData[postObj.uid] || {}) };
 				postObj.editor = postObj.editor ? editors[postObj.editor] : null;
 				postObj.bookmarked = bookmarks[i];
 				postObj.upvoted = voteData.upvotes[i];
@@ -194,7 +194,7 @@ module.exports = function (Topics) {
 		const pidToPrivs = _.zipObject(parentPids, postPrivileges);
 
 		parentPids = parentPids.filter(p => pidToPrivs[p]['topics:read']);
-		const parentPosts = await posts.getPostsFields(parentPids, ['uid', 'pid', 'timestamp', 'content', 'sourceContent', 'deleted']);
+		const parentPosts = await posts.getPostsFields(parentPids, ['uid', 'pid', 'timestamp', 'content', 'sourceContent', 'deleted', 'isAnonymous']);
 		const parentUids = _.uniq(parentPosts.map(postObj => postObj && postObj.uid));
 		const userData = await user.getUsersFields(parentUids, ['username', 'userslug', 'picture']);
 
@@ -217,11 +217,17 @@ module.exports = function (Topics) {
 		const parents = {};
 		parentPosts.forEach((post, i) => {
 			if (usersMap[post.uid]) {
+				const parentUser = { ...usersMap[post.uid] };
+				posts.applyAnonymousHandle({
+					uid: post.uid,
+					isAnonymous: post.isAnonymous,
+					user: parentUser,
+				}, callerUid);
 				parents[parentPids[i]] = {
 					uid: post.uid,
 					pid: post.pid,
 					content: post.content,
-					user: usersMap[post.uid],
+					user: parentUser,
 					timestamp: post.timestamp,
 					timestampISO: post.timestampISO,
 				};
