@@ -142,12 +142,13 @@ Topics.getTopicsByTids = async function (tids, options) {
 		};
 	}
 
-	const [result, hasRead, followData, bookmarks, callerSettings] = await Promise.all([
+	const [result, hasRead, followData, bookmarks, callerSettings, viewerIsAdmin] = await Promise.all([
 		loadTopics(),
 		Topics.hasReadTopics(tids, uid),
 		Topics.getFollowData(tids, uid),
 		Topics.getUserBookmarks(tids, uid),
 		user.getSettings(uid),
+		parseInt(uid, 10) > 0 ? user.isAdministrator(uid) : false,
 	]);
 
 	const sortNewToOld = callerSettings.topicPostSort === 'newest_to_oldest';
@@ -161,7 +162,7 @@ Topics.getTopicsByTids = async function (tids, options) {
 					isAnonymous: 1,
 					uid: topic.uid,
 					user: topic.user,
-				}, uid);
+				}, uid, { isAdmin: viewerIsAdmin });
 			}
 			if (result.tidToGuestHandle[topic.tid]) {
 				topic.user.username = validator.escape(result.tidToGuestHandle[topic.tid]);

@@ -31,9 +31,10 @@ module.exports = function (Posts) {
 		const uids = _.uniq(posts.map(p => p && p.uid));
 		const tids = _.uniq(posts.map(p => p && p.tid));
 
-		const [users, topicsAndCategories] = await Promise.all([
+		const [users, topicsAndCategories, viewerIsAdmin] = await Promise.all([
 			user.getUsersFields(uids, ['uid', 'username', 'userslug', 'picture', 'status']),
 			getTopicAndCategories(tids),
+			parseInt(uid, 10) > 0 ? user.isAdministrator(uid) : false,
 		]);
 
 		const uidToUser = toObject('uid', users);
@@ -52,7 +53,7 @@ module.exports = function (Posts) {
 
 			post.user = { ...(uidToUser[post.uid] || {}) };
 			Posts.overrideGuestHandle(post, post.handle);
-			Posts.applyAnonymousHandle(post, uid);
+			Posts.applyAnonymousHandle(post, uid, { isAdmin: viewerIsAdmin });
 			post.handle = undefined;
 			post.topic = tidToTopic[post.tid];
 			post.category = post.topic && cidToCategory[post.topic.cid];

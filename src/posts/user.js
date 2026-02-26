@@ -66,7 +66,7 @@ module.exports = function (Posts) {
 		}
 	};
 
-	Posts.applyAnonymousHandle = function (postData, viewerUid) {
+	Posts.applyAnonymousHandle = function (postData, viewerUid, viewerContext = {}) {
 		const isAnonymous = Number(postData && postData.isAnonymous) === 1;
 		if (!postData || !postData.user || !isAnonymous) {
 			return;
@@ -75,8 +75,9 @@ module.exports = function (Posts) {
 		const viewerUidInt = Number(viewerUid);
 		const postUidInt = Number(postData.uid);
 		const viewerIsOwner = Number.isInteger(viewerUidInt) && viewerUidInt > 0 && viewerUidInt === postUidInt;
+		const viewerIsAdmin = !!viewerContext.isAdmin;
 
-		if (viewerIsOwner) {
+		if (viewerIsOwner || viewerIsAdmin) {
 			appendAnonymousLabel(postData.user);
 			return;
 		}

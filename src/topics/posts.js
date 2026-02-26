@@ -124,6 +124,8 @@ module.exports = function (Topics) {
 			userData,
 			editors,
 			replies,
+			parentPostsDone,
+			viewerIsAdmin,
 		] = await Promise.all([
 			posts.hasBookmarked(pids, uid),
 			posts.getVoteStatusByPostIDs(pids, uid),
@@ -131,7 +133,9 @@ module.exports = function (Topics) {
 			getPostUserData('editor', async uids => await user.getUsersFields(uids, ['uid', 'username', 'userslug'])),
 			getPostReplies(postData, uid),
 			Topics.addParentPosts(postData, uid),
+			parseInt(uid, 10) > 0 ? user.isAdministrator(uid) : false,
 		]);
+		void parentPostsDone;
 
 		postData.forEach((postObj, i) => {
 			if (postObj) {
@@ -150,7 +154,7 @@ module.exports = function (Topics) {
 					postObj.user.displayname = postObj.user.username;
 				}
 
-				posts.applyAnonymousHandle(postObj, uid);
+				posts.applyAnonymousHandle(postObj, uid, { isAdmin: viewerIsAdmin });
 			}
 		});
 
@@ -182,6 +186,7 @@ module.exports = function (Topics) {
 	};
 
 	Topics.addParentPosts = async function (postData, callerUid) {
+		const viewerIsAdmin = parseInt(callerUid, 10) > 0 ? await user.isAdministrator(callerUid) : false;
 		let parentPids = postData
 			.filter(p => p && p.hasOwnProperty('toPid') && (activitypub.helpers.isUri(p.toPid) || utils.isNumber(p.toPid)))
 			.map(postObj => postObj.toPid);
@@ -222,7 +227,7 @@ module.exports = function (Topics) {
 					uid: post.uid,
 					isAnonymous: post.isAnonymous,
 					user: parentUser,
-				}, callerUid);
+				}, callerUid, { isAdmin: viewerIsAdmin });
 				parents[parentPids[i]] = {
 					uid: post.uid,
 					pid: post.pid,
