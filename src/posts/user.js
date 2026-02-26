@@ -66,6 +66,23 @@ module.exports = function (Posts) {
 		}
 	};
 
+	Posts.applyAnonymousHandle = function (postData) {
+		const isAnonymous = Number(postData && postData.isAnonymous) === 1;
+		if (!postData || !postData.user || !isAnonymous) {
+			return;
+		}
+
+		postData.user.username = 'Anonymous';
+		postData.user.displayname = 'Anonymous';
+		postData.user.userslug = '';
+		postData.user.picture = '';
+		postData.user['icon:bgColor'] = '#6c757d';
+		postData.user['icon:text'] = 'A';
+		if (Object.prototype.hasOwnProperty.call(postData.user, 'fullname')) {
+			postData.user.fullname = 'Anonymous';
+		}
+	};
+
 	async function checkGroupMembership(uid, groupTitleArray) {
 		if (!Array.isArray(groupTitleArray) || !groupTitleArray.length) {
 			return null;

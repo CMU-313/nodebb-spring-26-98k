@@ -61,12 +61,12 @@
 		<div class="draft-icon m-2 hidden-xs hidden-sm"></div>
 		<button class="btn btn-sm btn-link py-2 text-body fw-semibold text-nowrap" data-action="preview">
 			<i class="fa fa-eye"></i>
-			<span class="d-none d-xl-inline show-text">sss[[modules:composer.show-preview]]</span>
+			<span class="d-none d-xl-inline show-text">[[modules:composer.show-preview]]</span>
 			<span class="d-none d-xl-inline hide-text">[[modules:composer.hide-preview]]</span>
 		</button>
-		<button class="btn btn-sm btn-link py-2 text-body fw-semibold text-nowrap" data-action="custom">
-			<i class="fa fa-star"></i>
-			<span class="d-none d-xl-inline">Custom</span>
+		<button class="btn btn-sm btn-link py-2 text-body fw-semibold text-nowrap" data-action="anonymous" aria-pressed="false">
+			<i class="fa fa-user-secret"></i>
+			<span class="d-none d-xl-inline">Anonymous</span>
 		</button>
 		{{{ if composer:showHelpTab }}}
 		<button class="btn btn-sm btn-link py-2 text-body fw-semibold text-nowrap" data-action="help">
