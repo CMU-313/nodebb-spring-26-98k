@@ -65,7 +65,7 @@ module.exports = function (Topics) {
 			}
 
 			post.user = { ...(users[post.uid] || {}) };
-			posts.applyAnonymousHandle(post);
+			posts.applyAnonymousHandle(post, uid);
 			post.timestampISO = utils.toISOString(post.timestamp);
 			tidToPost[post.tid] = post;
 		});

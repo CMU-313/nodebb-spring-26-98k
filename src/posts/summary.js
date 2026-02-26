@@ -52,7 +52,7 @@ module.exports = function (Posts) {
 
 			post.user = uidToUser[post.uid];
 			Posts.overrideGuestHandle(post, post.handle);
-			Posts.applyAnonymousHandle(post);
+			Posts.applyAnonymousHandle(post, uid);
 			post.handle = undefined;
 			post.topic = tidToTopic[post.tid];
 			post.category = post.topic && cidToCategory[post.topic.cid];

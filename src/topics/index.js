@@ -159,8 +159,9 @@ Topics.getTopicsByTids = async function (tids, options) {
 			if (result.anonymousByTid[topic.tid]) {
 				posts.applyAnonymousHandle({
 					isAnonymous: 1,
+					uid: topic.uid,
 					user: topic.user,
-				});
+				}, uid);
 			}
 			if (result.tidToGuestHandle[topic.tid]) {
 				topic.user.username = validator.escape(result.tidToGuestHandle[topic.tid]);

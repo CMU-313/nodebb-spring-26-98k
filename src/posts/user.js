@@ -66,9 +66,18 @@ module.exports = function (Posts) {
 		}
 	};
 
-	Posts.applyAnonymousHandle = function (postData) {
+	Posts.applyAnonymousHandle = function (postData, viewerUid) {
 		const isAnonymous = Number(postData && postData.isAnonymous) === 1;
 		if (!postData || !postData.user || !isAnonymous) {
+			return;
+		}
+
+		const viewerUidInt = Number(viewerUid);
+		const postUidInt = Number(postData.uid);
+		const viewerIsOwner = Number.isInteger(viewerUidInt) && viewerUidInt > 0 && viewerUidInt === postUidInt;
+
+		if (viewerIsOwner) {
+			appendAnonymousLabel(postData.user);
 			return;
 		}
 
@@ -82,6 +91,21 @@ module.exports = function (Posts) {
 			postData.user.fullname = 'Anonymous';
 		}
 	};
+
+	function appendAnonymousLabel(userData) {
+		const suffix = ' (Anonymous)';
+		const fields = ['username', 'displayname', 'fullname'];
+
+		fields.forEach((field) => {
+			if (typeof userData[field] !== 'string') {
+				return;
+			}
+			if (userData[field].endsWith(suffix)) {
+				return;
+			}
+			userData[field] = `${userData[field]}${suffix}`;
+		});
+	}
 
 	async function checkGroupMembership(uid, groupTitleArray) {
 		if (!Array.isArray(groupTitleArray) || !groupTitleArray.length) {

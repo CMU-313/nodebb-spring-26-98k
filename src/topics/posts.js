@@ -150,7 +150,7 @@ module.exports = function (Topics) {
 					postObj.user.displayname = postObj.user.username;
 				}
 
-				posts.applyAnonymousHandle(postObj);
+				posts.applyAnonymousHandle(postObj, uid);
 			}
 		});
 
