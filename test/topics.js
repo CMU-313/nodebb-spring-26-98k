@@ -370,6 +370,7 @@ describe('Topic\'s', () => {
 				assert.strictEqual(topicData.deleted, 0);
 				assert.strictEqual(topicData.locked, 0);
 				assert.strictEqual(topicData.pinned, 0);
+				assert.strictEqual(topicData.endorsed, 0);
 				done();
 			});
 		});
@@ -658,13 +659,13 @@ describe('Topic\'s', () => {
 		it('should endorse topic', async () => {
 			await apiTopics.endorse({ uid: adminUid }, { tids: [newTopic.tid], cid: categoryObj.cid });
 			const endorsed = await topics.getTopicField(newTopic.tid, 'endorsed');
-			assert.strictEqual(pinned, 1);
+			assert.strictEqual(endorsed, '1');
 		});
 
 		it('should unendorse topic', async () => {
 			await apiTopics.unendorse({ uid: adminUid }, { tids: [newTopic.tid], cid: categoryObj.cid });
 			const endorsed = await topics.getTopicField(newTopic.tid, 'endorsed');
-			assert.strictEqual(endorsed, 0);
+			assert.strictEqual(endorsed, '0');
 		});
 
 		it('should move all topics', (done) => {
