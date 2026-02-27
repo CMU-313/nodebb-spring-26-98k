@@ -1,0 +1,878 @@
+
+> nodebb@4.8.0 test
+> nyc --reporter=html --reporter=text-summary mocha
+
+info: configJSON
+info: {
+    "url": "http://127.0.0.1:4567",
+    "secret": "caa88f32-5aa7-4dc4-a813-3fbcaf852d7b",
+    "database": "redis",
+    "port": "4567",
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379,
+        "password": "",
+        "database": 0
+    },
+    "test_database": {
+    "host": "127.0.0.1",
+    "port": "6379",
+    "password": "",
+    "database": "1"
+    }
+}
+info: database config redis {"database":"1","host":"127.0.0.1","password":"","port":"6379"}
+info: environment production
+
+info: test_database flushed
+info: Populating database with default configs, if not already set...
+
+info: Giving default global privileges...
+
+info: Enabling default plugins
+
+info: [install/enableDefaultPlugins] activating default plugins {"0":"nodebb-plugin-dbsearch","1":"nodebb-widget-essentials","2":"nodebb-plugin-composer-default"}
+info: [socket.io] Restricting access to origin: *:*
+info: [api] Adding 0 route(s) to `api/v3/plugins`
+info: [router] Routes added
+info: 🎉 NodeBB Ready
+info: 🤝 Setting 'trust proxy' to true
+info: 📡 NodeBB is now listening on: 0.0.0.0:4567
+info: 🔗 Canonical URL: http://127.0.0.1:4567
+
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................,.....,,,,,,,,,,
+  ,,......................................................
+  .....................  started
+.  started
+.  started
+.  started
+.  started
+.  started
+.  started
+.  started
+............................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  .cs d80e8321de04de3ca17f0fbdb0de5db001a68d56ce1f1d1cb12fd2f5397db82cf315c4564b5338c2f1087b7302a9a55abeb357d88ff9725a82e1aa0da6557415
+.......................................................
+  ........................................................
+  .......................,,...............................
+  ...............................................
+
+  Build targets:
+
+     Target                        |  Aliases
+     ------------------------------------------------------
+     "plugin static dirs"          |  staticdirs
+     "requirejs modules"           |  rjs, modules
+     "client js bundle"            |  clientjs, clientscript, clientscripts
+     "admin js bundle"             |  adminjs, adminscript, adminscripts
+     "javascript"                  |  js
+     "client side styles"          |  clientcss, clientscss, clientstyles, clientstyle
+     "admin control panel styles"  |  admincss, adminscss, adminstyles, adminstyle, acpcss, acpscss, acpstyles, acpstyle
+     "styles"                      |  css, scss, style
+     "templates"                   |  tpl
+     "languages"                   |  lang, i18n
+
+.........
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  ........................................................
+  .....!
+
+
+error [user.create] Validation email failed to send
+[emailer.send] Error: [[error:sendmail-not-found]]
+    at Emailer.sendToEmail (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/emailer.js:17:2657)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Emailer.send (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/emailer.js:16:202)
+    at async UserEmail.sendValidationEmail (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/user/email.js:10:2289)
+    at async create (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/user/create.js:2:5272)
+    at async User.create (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/user/create.js:2:1508)
+    at async setupData (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/api.js:190:32)
+    at async Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/api.js:496:6)
+error [posts/uploads] Error while saving post upload sizes (files/test.png): Input file contains unsupported image format
+error [activitypub/api] Error
+Error: [[error:invalid-data]]
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/activitypub/out.js:30:4793
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.announce (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/activitypub/out.js:8:1125)
+error TypeError: Cannot read properties of undefined (reading 'method')
+    at helpers.formatApiResponse (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/controllers/helpers.js:4:13888)
+    at Object.wrapperCallback [as formatApiResponse] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at Controller.postInbox (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/controllers/activitypub/index.js:9:652)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/activitypub.js:317:6)
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+error POST /login
+Error: [[error:invalid-ip]]
+    at Blacklist.test (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/meta/blacklist.js:2:3054)
+    at Object.wrapperCallback [as test] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at applyBlacklist (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/index.js:4:2489)
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/route.js:149:13)
+    at csrfSynchronisedProtection (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/csrf-sync/lib/index.cjs:79:7)
+    at middleware.applyCSRF (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/index.js:2:1706)
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:346:12)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:280:10)
+    at rewrite (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/controllers/home.js:2:1482)
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:328:13)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:346:12)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:280:10)
+    at Function.handle (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:175:3)
+    at router (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:47:12)
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:328:13)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:346:12)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:280:10)
+    at stripLeadingSlashes (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/index.js:2:3227)
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:328:13)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:346:12)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:280:10)
+    at Logger.expressLogger (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/logger.js:20:194)
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:328:13)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:346:12)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:280:10)
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/webserver.js:3:5706
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:328:13)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:346:12)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:280:10)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/routes/authentication.js:2:1225
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:328:13)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:346:12)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:280:10)
+    at strategy.pass (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/passport/lib/middleware/authenticate.js:355:9)
+    at SessionStrategy.authenticate (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/passport/lib/strategies/session.js:126:10)
+    at attempt (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/passport/lib/middleware/authenticate.js:378:16)
+    at authenticate (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/passport/lib/middleware/authenticate.js:379:7)
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:328:13)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:346:12)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:280:10)
+    at initialize (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/passport/lib/middleware/initialize.js:98:5)
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:328:13)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:346:12)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:280:10)
+    at processRender (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/render.js:3:4156)
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:328:13)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:346:12)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:280:10)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/headers.js:2:4599
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/helpers.js:2:1052
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:328:13)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:346:12)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:280:10)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:537:6)
+    at xXssProtectionMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:315:3)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:535:6)
+    at xPoweredByMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:308:3)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:535:6)
+    at xPermittedCrossDomainPoliciesMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:301:3)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:535:6)
+    at xFrameOptionsMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:285:3)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:535:6)
+    at xDownloadOptionsMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:265:3)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:535:6)
+    at xDnsPrefetchControlMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:258:3)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:535:6)
+    at xContentTypeOptionsMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:250:3)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:535:6)
+    at strictTransportSecurityMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:243:3)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:535:6)
+    at referrerPolicyMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:211:3)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:535:6)
+    at originAgentClusterMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:186:3)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:535:6)
+    at crossOriginResourcePolicyMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:179:3)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:535:6)
+    at crossOriginOpenerPolicyMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:163:3)
+    at internalNext (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:535:6)
+    at helmetMiddleware (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/helmet/index.cjs:539:6)
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:328:13)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:346:12)
+    at next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/index.js:280:10)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express-session/index.js:514:7
+    at optionalCb (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/connect-redis/dist/connect-redis.cjs:5:18)
+    at RedisStore.get (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/connect-redis/dist/connect-redis.cjs:32:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+error GET /api/self
+Error: [[error:api.master-token-no-uid]]
+    at authenticate (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/user.js:4:581)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/user.js:7:457
+    at async /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/helpers.js:2:810
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+warn [meta/blacklist] 1 invalid blacklist rule(s) were ignored.
+warn [meta/blacklist] 1 invalid blacklist rule(s) were ignored.
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info [build] Building in parallel mode
+info [build] plugin static dirs  build started
+info [build] plugin static dirs  build completed in 0.002sec
+info [build] Asset compilation successful. Completed in 0.002sec.
+info [build] Building in parallel mode
+info [build] requirejs modules  build started
+info [build] requirejs modules  build completed in 0.043sec
+info [build] Asset compilation successful. Completed in 0.043sec.
+info [build] Building in parallel mode
+info [build] client js bundle  build started
+info [build] client js bundle  build completed in 0.485sec
+info [build] Asset compilation successful. Completed in 0.485sec.
+info [build] Building in parallel mode
+info [build] admin js bundle  build started
+info [build] admin js bundle  build completed in 0.002sec
+info [build] Asset compilation successful. Completed in 0.003sec.
+info [build] Building in parallel mode
+info [build] client side styles  build started
+info [build] client side styles  build completed in 1.448sec
+info [build] Asset compilation successful. Completed in 1.448sec.
+info [build] Building in parallel mode
+info [build] admin control panel styles  build started
+info [build] admin control panel styles  build completed in 0.858sec
+info [build] Asset compilation successful. Completed in 0.859sec.
+info [build] Building in parallel mode
+info [build] templates  build started
+warn [meta/templates] Partial not loaded: partials/category/tools.tpl
+info [build] templates  build completed in 0.351sec
+info [build] Asset compilation successful. Completed in 0.352sec.
+info [build] Building in parallel mode
+info [build] languages  build started
+info [build] languages  build completed in 1.456sec
+info [build] Asset compilation successful. Completed in 1.456sec.
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+warn [deprecated]
+    at SocketCategories.getRecentReplies (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:4:661)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as getRecentReplies] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      use GET /api/v3/categories/:cid/posts
+warn [deprecated]
+    at SocketCategories.get (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:4:923)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as get] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      use GET /api/v3/categories
+warn [deprecated]
+    at SocketCategories.getWatchedCategories (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:4:1238)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as getWatchedCategories] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      there is no replacement for this call.
+warn [deprecated]
+    at SocketCategories.loadMore (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:4:1826)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as loadMore] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      use GET /api/v3/categories/:cid/topics
+warn [deprecated]
+    at SocketCategories.loadMore (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:4:1826)
+    at Object.wrapperCallback [as loadMore] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/categories.js:242:40)
+      use GET /api/v3/categories/:cid/topics
+warn [deprecated]
+    at SocketCategories.getTopicCount (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:5:255)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as getTopicCount] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      use GET /api/v3/categories/:cid
+warn [deprecated]
+    at SocketCategories.getCategoriesByPrivilege (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:5:594)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as getCategoriesByPrivilege] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      there is no replacement for this call.
+warn [deprecated]
+    at SocketCategories.getMoveCategories (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:5:877)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as getMoveCategories] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      there is no replacement for this call.
+warn [deprecated]
+    at SocketCategories.getSelectCategories (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:5:1132)
+    at Object.wrapperCallback [as getSelectCategories] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at SocketCategories.getMoveCategories (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:5:955)
+      there is no replacement for this call.
+warn [deprecated]
+    at SocketCategories.ignore (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:5:2675)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as ignore] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      there is no replacement for this call.
+warn [deprecated]
+    at SocketCategories.watch (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:5:2431)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as watch] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      there is no replacement for this call.
+warn [deprecated]
+    at SocketCategories.setWatchState (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:5:1770)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as setWatchState] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      use PUT/DELETE /api/v3/categories/:cid/watch
+warn [deprecated]
+    at SocketCategories.isModerator (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories.js:6:697)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as isModerator] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      there is no replacement for this call.
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+error GET /api/users?query=bar&section=sort-posts
+Error: [[error:no-privileges]]
+    at usersAPI.search (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/api/users.js:9:3211)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async usersController.search (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/controllers/users.js:2:1969)
+    at async usersController.index (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/controllers/users.js:2:1380)
+    at async /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/routes/helpers.js:6:340
+warn [controller] Bad request: /user/a%AFc
+error Error decoding URI: a%AFc
+error URIError: URI malformed
+    at decodeURIComponent (<anonymous>)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/helpers.js:2:1552
+    at Array.forEach (<anonymous>)
+    at helpers.buildBodyClass (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/helpers.js:2:1447)
+    at renderMethod (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/render.js:3:1048)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async ServerResponse.renderOverride [as render] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/render.js:3:4043)
+warn [controller] Bad request: /api/user/a%AFc
+error GET /users
+csrf-error
+error GET /users
+Error: regular error
+    at Object.method (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/controllers.js:1521:18)
+    at Object.fireResponseHook [as response] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/plugins/hooks.js:23:40)
+    at Hooks.fire (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/plugins/hooks.js:15:2215)
+    at Object.wrapperCallback [as fire] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/index.js:2:3900
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/middleware/helpers.js:2:816
+    at Layer.handle [as handle_request] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/layer.js:95:5)
+    at Immediate.next (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/node_modules/express/lib/router/route.js:149:13)
+    at process.processImmediate (node:internal/timers:485:21)
+    at process.callbackTrampoline (node:internal/async_hooks:130:17)
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+error [emailer.send] AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert(false)
+
+    at Object.method (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/emailer.js:157:5)
+    at fireMethod (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/plugins/hooks.js:20:832)
+    at Object.fireStaticHook [as static] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/plugins/hooks.js:21:7)
+    at Hooks.fire (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/plugins/hooks.js:15:2215)
+    at Object.wrapperCallback [as fire] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at Emailer.sendToEmail (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/emailer.js:17:2276)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Emailer.send (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/emailer.js:16:202)
+    at async User.bans.ban (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/user/bans.js:6:484)
+    at async Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/emailer.js:164:4)
+warn [emailer/send] User recipient (uid: 1) is banned; not sending email due to system config.
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+error PUT /api/v3/flags/12
+invalid csrf token
+error POST /api/v3/flags/12/notes
+invalid csrf token
+error DELETE /api/v3/flags/12/notes/1770737778305
+invalid csrf token
+error DELETE /api/v3/flags/12
+invalid csrf token
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+warn [meta/dependencies] Bundled plugin nodebb-plugin-somePlugin not found, skipping dependency check.
+warn [meta/dependencies] Bundled plugin nodebb-theme-someTheme not found, skipping dependency check.
+warn [missing] nodebb-plugin-test is a required dependency but could not be found
+
+warn [outdated] nodebb-plugin-test installed v0.9.0, package.json requires 1.0.0
+
+error [middleware.addHeaders] Invalid RegExp For access-control-allow-origin [match\.this\..+\.domain.com
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+warn [plugins] filter:test.hook3 already resolved in plugin test-plugin
+error Cannot activate plugins while plugin state is set in the configuration (config.json, environmental variables or terminal arguments), please modify the configuration instead
+error Cannot activate plugins while plugin state is set in the configuration (config.json, environmental variables or terminal arguments), please modify the configuration instead
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+warn [deprecated]
+    at SocketPosts.changeOwner (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/posts/tools.js:3:3274)
+    at Object.wrapperCallback [as changeOwner] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/posts.js:89:21)
+      use PUT /api/v3/posts/owner
+warn [deprecated]
+    at SocketPosts.getVoters (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/posts/votes.js:2:654)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as getVoters] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      use GET /api/v3/posts/:pid/voters
+warn [deprecated]
+    at SocketPosts.getUpvoters (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/posts/votes.js:2:1101)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as getUpvoters] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      use GET /api/v3/posts/:pid/upvoters
+warn [deprecated]
+    at SocketPosts.getUpvoters (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/posts/votes.js:2:1101)
+    at Object.wrapperCallback [as getUpvoters] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/posts.js:195:37)
+      use GET /api/v3/posts/:pid/upvoters
+error [activitypub/api] Error
+Error: [[error:invalid-data]]
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/activitypub/out.js:30:4793
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.announce (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/activitypub/out.js:8:1125)
+warn [deprecated]
+    at SocketPosts.getRawPost (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/posts.js:2:816)
+    at Object.wrapperCallback [as getRawPost] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/posts.js:849:42)
+      use GET /api/v3/posts/:pid/raw
+warn [deprecated]
+    at SocketPosts.getPostSummaryByPid (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/posts.js:2:2981)
+    at Object.wrapperCallback [as getPostSummaryByPid] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/posts.js:870:38)
+      use GET /api/v3/posts/:pid/summary
+warn [deprecated]
+    at SocketPosts.getPidIndex (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/posts.js:2:3452)
+    at Object.wrapperCallback [as getPidIndex] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/posts.js:882:36)
+      use GET /api/v3/posts/:pid/index
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+warn [deprecated]
+    at SocketCategories.categorySearch (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories/search.js:4:433)
+    at Object.wrapperCallback [as categorySearch] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/search.js:133:37)
+      use GET /api/v3/search/categories
+warn [deprecated]
+    at SocketCategories.categorySearch (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/categories/search.js:4:433)
+    at Object.wrapperCallback [as categorySearch] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2609)
+    at Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/search.js:135:33)
+      use GET /api/v3/search/categories
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+error [emailer.send] Error: [[error:sendmail-not-found]]
+    at Emailer.sendToEmail (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/emailer.js:17:2657)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Emailer.send (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/emailer.js:16:202)
+    at async User.bans.ban (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/user/bans.js:6:484)
+    at async usersAPI.ban (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/api/users.js:3:2494)
+    at async Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/socket.io.js:104:3)
+warn [socket.io] Call to admin method ( someMethod ) blocked (accessed by uid 10)
+info [user/jobs] Digest (month) scheduling completed (1 subscribers). Sending emails; this may take some time...
+info [user/jobs] Digest (month) sending completed. 0 emails sent.
+info [user/jobs] Digest (month) complete.
+warn [user/email] No email found for uid 1
+info [user/jobs] Digest (day) scheduling completed (1 subscribers). Sending emails; this may take some time...
+info [user/jobs] Digest (day) sending completed. 0 emails sent.
+info [user/jobs] Digest (day) complete.
+error [emailer.send] Error: [[error:sendmail-not-found]]
+    at Emailer.sendToEmail (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/emailer.js:17:2657)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Emailer.send (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/emailer.js:16:202)
+    at async UserReset.send (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/user/reset.js:3:868)
+    at async /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/admin/user.js:2:5565
+    at async Promise.all (index 0)
+    at async User.sendPasswordResetEmail (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/admin/user.js:2:5176)
+    at async Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/socket.io.js:690:4)
+error [emailer.send] Error: [[error:sendmail-not-found]]
+    at Emailer.sendToEmail (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/emailer.js:17:2657)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Emailer.send (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/emailer.js:16:202)
+    at async UserReset.send (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/user/reset.js:3:868)
+    at async SocketUser.reset.send (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/user.js:2:2001)
+    at async Context.<anonymous> (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/test/socket.io.js:711:4)
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+error POST /api/v3/topics
+invalid csrf token
+warn [deprecated]
+    at SocketTopics.move (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/socket.io/topics/move.js:2:724)
+    at Callbackified (node:util:386:5)
+    at Object.wrapperCallback [as move] (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/promisify.js:2:2525)
+      use PUT /api/v3/topics/:tid/move
+error [activitypub/api] Error
+Error: [[error:invalid-data]]
+    at /workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/activitypub/out.js:30:4793
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.announce (/workspaces/NodeBB-S26-R3/nodebb-spring-26-98k/src/activitypub/out.js:8:1125)
+info test_database flushed
+info Populating database with default configs, if not already set...
+
+info Giving default global privileges...
+
+info Enabling default plugins
+
+info [install/enableDefaultPlugins] activating default plugins
+
+
+  3742 passing (2m)
+  15 pending
+  1 failing
+
+  1) Topic's
+       .fork
+         should properly update topic vote count after forking:
+     Error: [[error:user-too-new, 0]]
+      at isReady (src/user/posts.js:2:3073)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async User.isReadyToPost (src/user/posts.js:2:659)
+      at async Topics.post (src/topics/create.js:3:5890)
+      at async Context.<anonymous> (test/topics.js:986:19)
+
+
+
+
+=============================== Coverage summary ===============================
+Statements   : 77.72% ( 24646/31710 )
+Branches     : 63.14% ( 10562/16727 )
+Functions    : 77.94% ( 4368/5604 )
+Lines        : 77.97% ( 23774/30489 )
+================================================================================
