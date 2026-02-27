@@ -353,11 +353,11 @@ define('composer', [
 			composer.posts[post_uuid].modified = true;
 		});
 
-		// This is where we update the button Toggle when clicked 
+		// This is where we update the button Toggle when clicked for staff only
 		composer.posts[post_uuid].staffOnlyEnabled = composer.posts[post_uuid].staffOnlyEnabled || false;
 		postContainer.off('click.staffOnly', '#staff-only-btn');
 		postContainer.on('click.staffOnly', '#staff-only-btn', function () {
-			console.log('staff button clicked');
+			// for testing if it was working console.log('staff button clicked');
 			const enabled = !composer.posts[post_uuid].staffOnlyEnabled;
 			composer.posts[post_uuid].staffOnlyEnabled = enabled;
 
@@ -756,6 +756,7 @@ define('composer', [
 				timestamp: scheduler.getTimestamp(),
 			};
 			composerData.staffOnly = !!composer.posts[post_uuid].staffOnlyEnabled;
+			// will recive staff only input to backend but wont do anything with it need it hear for post creation
 		} else if (action === 'posts.reply') {
 			route = `/topics/${postData.tid}`;
 			composerData = {
@@ -766,6 +767,7 @@ define('composer', [
 				toPid: postData.toPid,
 			};
 			composerData.staffOnly = !!composer.posts[post_uuid].staffOnlyEnabled;
+			// will recive staff only input to backend but wont do anything with it need it here for post replys
 		} else if (action === 'posts.edit') {
 			method = 'put';
 			route = `/posts/${encodeURIComponent(postData.pid)}`;
