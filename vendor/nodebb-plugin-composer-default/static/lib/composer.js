@@ -40,11 +40,16 @@ define('composer', [
 		localStorage.removeItem('category:' + data.data.cid + ':bookmark:clicked');
 	});
 
+	let staffOnlyEnabled = false;
 	// Staff-only button (UI test)
-	$(document).off('click.staffOnly').on('click.staffOnly', '#staff-only-btn', function (e) {
-		e.preventDefault();
-		console.log('Staff-only button clicked!');
-		alerts.success('Staff-only clicked!');
+	$(document).on('click.staffOnly').on('click.staffOnly', '#staff-only-btn', function () {
+		staffOnlyEnabled = !staffOnlyEnabled;
+		const btn = $(this);
+		if(staffOnlyEnabled) {
+			btn.removeClass('btn-light').addClass('btn-danger'); // highlight button
+		} else {
+			btn.removeClass('btn-danger').addClass('btn-light');
+		}
 	});
 
 	$(window).on('popstate', function () {
