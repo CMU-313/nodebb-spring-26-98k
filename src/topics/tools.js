@@ -179,7 +179,7 @@ module.exports = function (Topics) {
 			Topics.events.log(tid, { type: endorse ? 'endorse' : 'unendorse', uid }),
 		];
 	
-
+		// topicData.endorsed = endorse ? 1 : 0;
 		if (endorse) {
 			promises.push(
 				//Topics.setTopicField(tid, 'endorsed', 1),
