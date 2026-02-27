@@ -124,6 +124,8 @@ module.exports = function (Topics) {
 			userData,
 			editors,
 			replies,
+			parentPostsDone,
+			viewerIsAdmin,
 		] = await Promise.all([
 			posts.hasBookmarked(pids, uid),
 			posts.getVoteStatusByPostIDs(pids, uid),
@@ -131,11 +133,13 @@ module.exports = function (Topics) {
 			getPostUserData('editor', async uids => await user.getUsersFields(uids, ['uid', 'username', 'userslug'])),
 			getPostReplies(postData, uid),
 			Topics.addParentPosts(postData, uid),
+			parseInt(uid, 10) > 0 ? user.isAdministrator(uid) : false,
 		]);
+		void parentPostsDone;
 
 		postData.forEach((postObj, i) => {
 			if (postObj) {
-				postObj.user = postObj.uid ? userData[postObj.uid] : { ...userData[postObj.uid] };
+				postObj.user = { ...(userData[postObj.uid] || {}) };
 				postObj.editor = postObj.editor ? editors[postObj.editor] : null;
 				postObj.bookmarked = bookmarks[i];
 				postObj.upvoted = voteData.upvotes[i];
@@ -149,6 +153,8 @@ module.exports = function (Topics) {
 					postObj.user.username = validator.escape(String(postObj.handle));
 					postObj.user.displayname = postObj.user.username;
 				}
+
+				posts.applyAnonymousHandle(postObj, uid, { isAdmin: viewerIsAdmin });
 			}
 		});
 
@@ -180,6 +186,7 @@ module.exports = function (Topics) {
 	};
 
 	Topics.addParentPosts = async function (postData, callerUid) {
+		const viewerIsAdmin = parseInt(callerUid, 10) > 0 ? await user.isAdministrator(callerUid) : false;
 		let parentPids = postData
 			.filter(p => p && p.hasOwnProperty('toPid') && (activitypub.helpers.isUri(p.toPid) || utils.isNumber(p.toPid)))
 			.map(postObj => postObj.toPid);
@@ -192,7 +199,7 @@ module.exports = function (Topics) {
 		const pidToPrivs = _.zipObject(parentPids, postPrivileges);
 
 		parentPids = parentPids.filter(p => pidToPrivs[p]['topics:read']);
-		const parentPosts = await posts.getPostsFields(parentPids, ['uid', 'pid', 'timestamp', 'content', 'sourceContent', 'deleted']);
+		const parentPosts = await posts.getPostsFields(parentPids, ['uid', 'pid', 'timestamp', 'content', 'sourceContent', 'deleted', 'isAnonymous']);
 		const parentUids = _.uniq(parentPosts.map(postObj => postObj && postObj.uid));
 		const userData = await user.getUsersFields(parentUids, ['username', 'userslug', 'picture']);
 
@@ -215,11 +222,17 @@ module.exports = function (Topics) {
 		const parents = {};
 		parentPosts.forEach((post, i) => {
 			if (usersMap[post.uid]) {
+				const parentUser = { ...usersMap[post.uid] };
+				posts.applyAnonymousHandle({
+					uid: post.uid,
+					isAnonymous: post.isAnonymous,
+					user: parentUser,
+				}, callerUid, { isAdmin: viewerIsAdmin });
 				parents[parentPids[i]] = {
 					uid: post.uid,
 					pid: post.pid,
 					content: post.content,
-					user: usersMap[post.uid],
+					user: parentUser,
 					timestamp: post.timestamp,
 					timestampISO: post.timestampISO,
 				};

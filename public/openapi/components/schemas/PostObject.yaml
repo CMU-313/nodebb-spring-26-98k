@@ -24,6 +24,9 @@ PostObject:
     uid:
       type: number
       description: A user identifier
+    isAnonymous:
+      type: string
+      description: Whether the post was authored anonymously ("1" or "0")
     timestamp:
       type: number
     deleted:
@@ -168,6 +171,9 @@ PostDataObject:
         tid:
           type: number
           description: A topic identifier
+        isAnonymous:
+          type: string
+          description: Whether the post was authored anonymously ("1" or "0")
         content:
           type: string
         timestamp:

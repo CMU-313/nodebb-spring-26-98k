@@ -42,9 +42,10 @@ module.exports = function (Topics) {
 			}
 		});
 
-		const [allPostData, callerSettings] = await Promise.all([
-			posts.getPostsFields(teaserPids, ['pid', 'uid', 'timestamp', 'tid', 'content', 'sourceContent']),
+		const [allPostData, callerSettings, viewerIsAdmin] = await Promise.all([
+			posts.getPostsFields(teaserPids, ['pid', 'uid', 'timestamp', 'tid', 'content', 'sourceContent', 'isAnonymous']),
 			user.getSettings(uid),
+			parseInt(uid, 10) > 0 ? user.isAdministrator(uid) : false,
 		]);
 		let postData = allPostData.filter(post => post && post.pid);
 		postData = await handleBlocks(uid, postData);
@@ -64,7 +65,8 @@ module.exports = function (Topics) {
 				post.uid = 0;
 			}
 
-			post.user = users[post.uid];
+			post.user = { ...(users[post.uid] || {}) };
+			posts.applyAnonymousHandle(post, uid, { isAdmin: viewerIsAdmin });
 			post.timestampISO = utils.toISOString(post.timestamp);
 			tidToPost[post.tid] = post;
 		});
