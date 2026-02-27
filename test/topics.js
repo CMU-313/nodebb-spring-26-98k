@@ -655,6 +655,12 @@ describe('Topic\'s', () => {
 			assert.strictEqual(pinned, 0);
 		});
 
+		it('should endorse topic', async () => {
+			await apiTopics.endorse({ uid: adminUid }, { tids: [newTopic.tid], cid: categoryObj.cid });
+			const endorsed = await topics.getTopicField(newTopic.tid, 'endorsed');
+			assert.strictEqual(endorsed, '1');
+		});
+
 		it('should move all topics', (done) => {
 			socketTopics.moveAll({ uid: adminUid }, { cid: moveCid, currentCid: categoryObj.cid }, (err) => {
 				assert.ifError(err);
