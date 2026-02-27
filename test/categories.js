@@ -21,6 +21,8 @@ describe('Categories', () => {
 		posterUid = await User.create({ username: 'poster' });
 		adminUid = await User.create({ username: 'admin' });
 		await groups.join('administrators', adminUid);
+		// Set joindate to past so test user can post immediately
+		await User.setUserField(posterUid, 'joindate', Date.now() - 10000);
 	});
 
 
