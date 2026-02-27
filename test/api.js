@@ -542,7 +542,7 @@ describe('API', async () => {
 				//flaky test removes for GET /api/admin/extend/plugins
 				// Recursively iterate through schema properties, comparing type
 				it('response body should match schema definition', () => {
-					if(path == '/api/admin/extend/plugins') {
+					if (path === '/api/admin/extend/plugins') {
 						return;
 					}
 					const http302 = context[method].responses['302'];

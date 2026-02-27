@@ -266,6 +266,13 @@ TopicObjectSlim:
           type: number
         votes:
           type: number
+        status:
+          type: string
+          description: Question status indicator (unanswered/answered/resolved)
+          enum:
+            - unanswered
+            - answered
+            - resolved
         teaserPid:
           oneOf:
             - type: number

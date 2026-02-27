@@ -235,3 +235,12 @@ Topics.uncrosspost = async (req, res) => {
 
 	helpers.formatApiResponse(200, res, { crossposts });
 };
+
+Topics.updateStatus = async (req, res) => {
+	const result = await api.topics.updateStatus(req, {
+		tid: req.params.tid,
+		status: req.body.status,
+	});
+	
+	helpers.formatApiResponse(200, res, result);
+};
