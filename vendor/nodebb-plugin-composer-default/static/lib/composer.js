@@ -40,18 +40,6 @@ define('composer', [
 		localStorage.removeItem('category:' + data.data.cid + ':bookmark:clicked');
 	});
 
-	let staffOnlyEnabled = false;
-	// Staff-only button (UI test)
-	$(document).on('click.staffOnly').on('click.staffOnly', '#staff-only-btn', function () {
-		staffOnlyEnabled = !staffOnlyEnabled;
-		const btn = $(this);
-		if(staffOnlyEnabled) {
-			btn.removeClass('btn-light').addClass('btn-danger'); // highlight button
-		} else {
-			btn.removeClass('btn-danger').addClass('btn-light');
-		}
-	});
-
 	$(window).on('popstate', function () {
 		var env = utils.findBootstrapEnvironment();
 		if (composer.active && (env === 'xs' || env === 'sm')) {
@@ -363,6 +351,19 @@ define('composer', [
 
 		postContainer.on('change', 'input, textarea', function () {
 			composer.posts[post_uuid].modified = true;
+		});
+
+		// This is where we update the button Toggle when clicked 
+		composer.posts[post_uuid].staffOnlyEnabled = composer.posts[post_uuid].staffOnlyEnabled || false;
+		postContainer.off('click.staffOnly', '#staff-only-btn');
+		postContainer.on('click.staffOnly', '#staff-only-btn', function () {
+			console.log('staff button clicked');
+			const enabled = !composer.posts[post_uuid].staffOnlyEnabled;
+			composer.posts[post_uuid].staffOnlyEnabled = enabled;
+
+			const btn = $(this);
+			btn.toggleClass('btn-danger', enabled);
+			btn.toggleClass('btn-light', !enabled);
 		});
 
 		postContainer.on('click', '.composer-submit', function (e) {
@@ -754,6 +755,7 @@ define('composer', [
 				thumbs: postData.thumbs || [],
 				timestamp: scheduler.getTimestamp(),
 			};
+			composerData.staffOnly = !!composer.posts[post_uuid].staffOnlyEnabled;
 		} else if (action === 'posts.reply') {
 			route = `/topics/${postData.tid}`;
 			composerData = {
@@ -763,6 +765,7 @@ define('composer', [
 				content: bodyEl.val(),
 				toPid: postData.toPid,
 			};
+			composerData.staffOnly = !!composer.posts[post_uuid].staffOnlyEnabled;
 		} else if (action === 'posts.edit') {
 			method = 'put';
 			route = `/posts/${encodeURIComponent(postData.pid)}`;
