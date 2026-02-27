@@ -80,6 +80,9 @@ get:
                                               type: number
                                             timestamp:
                                               type: number
+                                            isAnonymous:
+                                              type: string
+                                              description: "Whether the post was authored anonymously (\"1\" or \"0\")"
                                             content:
                                               type: string
                                             timestampISO:
@@ -140,6 +143,9 @@ get:
                                     type: number
                                   timestamp:
                                     type: number
+                                  isAnonymous:
+                                    type: string
+                                    description: "Whether the post was authored anonymously (\"1\" or \"0\")"
                                   content:
                                     type: string
                                   sourceContent:

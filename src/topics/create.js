@@ -229,9 +229,10 @@ module.exports = function (Topics) {
 		if (parseInt(uid, 10) || activitypub.helpers.isUri(uid) || meta.config.allowGuestReplyNotifications) {
 			setImmediate(async () => {
 				try {
+					const notificationDisplayName = Number(postData.isAnonymous) === 1 ? 'Anonymous' : postData.user.displayname;
 					await Topics.notifyFollowers(postData, uid, {
 						type: 'new-reply',
-						bodyShort: translator.compile('notifications:user-posted-to', postData.user.displayname, postData.topic.title),
+						bodyShort: translator.compile('notifications:user-posted-to', notificationDisplayName, postData.topic.title),
 						nid: `new_post:tid:${postData.topic.tid}:pid:${postData.pid}:uid:${uid}`,
 						mergeId: `notifications:user-posted-to|${postData.topic.tid}`,
 					});
@@ -268,6 +269,7 @@ module.exports = function (Topics) {
 		postData.display_move_tools = true;
 		postData.selfPost = false;
 		posts.overrideGuestHandle(postData, handle);
+		posts.applyAnonymousHandle(postData, uid);
 		return postData;
 	}
 

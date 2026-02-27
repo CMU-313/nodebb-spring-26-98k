@@ -14,6 +14,8 @@ define('quickreply', [
 	QuickReply.init = function () {
 		const element = components.get('topic/quickreply/text');
 		const qrDraftId = `qr:draft:tid:${ajaxify.data.tid}`;
+		const anonymousBtn = components.get('topic/quickreply/anonymous');
+		let isAnonymous = false;
 		const data = {
 			element: element,
 			strategies: [],
@@ -53,6 +55,23 @@ define('quickreply', [
 			},
 		});
 
+		function updateAnonymousButton() {
+			if (!anonymousBtn.length) {
+				return;
+			}
+			anonymousBtn.toggleClass('btn-primary', isAnonymous);
+			anonymousBtn.toggleClass('btn-ghost', !isAnonymous);
+			anonymousBtn.attr('aria-pressed', isAnonymous);
+		}
+
+		updateAnonymousButton();
+
+		anonymousBtn.on('click', function (e) {
+			e.preventDefault();
+			isAnonymous = !isAnonymous;
+			updateAnonymousButton();
+		});
+
 		let ready = true;
 		components.get('topic/quickreply/button').on('click', function (e) {
 			e.preventDefault();
@@ -60,10 +79,13 @@ define('quickreply', [
 				return;
 			}
 
+			const currentAnonymousState = anonymousBtn.length ? anonymousBtn.attr('aria-pressed') === 'true' : false;
+			isAnonymous = currentAnonymousState;
 			const replyMsg = element.val();
 			const replyData = {
 				tid: ajaxify.data.tid,
 				handle: undefined,
+				isAnonymous: currentAnonymousState,
 				content: replyMsg,
 			};
 			const replyLen = replyMsg.length;
@@ -94,6 +116,8 @@ define('quickreply', [
 				}
 
 				element.val('');
+				isAnonymous = false;
+				updateAnonymousButton();
 				storage.removeItem(qrDraftId);
 				QuickReply._autocomplete.hide();
 				hooks.fire('action:quickreply.success', { data });
@@ -117,10 +141,13 @@ define('quickreply', [
 		components.get('topic/quickreply/expand').on('click', (e) => {
 			e.preventDefault();
 			storage.removeItem(qrDraftId);
+			const currentAnonymousState = anonymousBtn.length ? anonymousBtn.attr('aria-pressed') === 'true' : false;
+			isAnonymous = currentAnonymousState;
 			const textEl = components.get('topic/quickreply/text');
 			hooks.fire('action:composer.post.new', {
 				tid: ajaxify.data.tid,
 				title: ajaxify.data.titleRaw,
+				isAnonymous: currentAnonymousState,
 				body: textEl.val(),
 			});
 			textEl.val('');

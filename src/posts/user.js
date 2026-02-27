@@ -66,6 +66,48 @@ module.exports = function (Posts) {
 		}
 	};
 
+	Posts.applyAnonymousHandle = function (postData, viewerUid, viewerContext = {}) {
+		const isAnonymous = Number(postData && postData.isAnonymous) === 1;
+		if (!postData || !postData.user || !isAnonymous) {
+			return;
+		}
+
+		const viewerUidInt = Number(viewerUid);
+		const postUidInt = Number(postData.uid);
+		const viewerIsOwner = Number.isInteger(viewerUidInt) && viewerUidInt > 0 && viewerUidInt === postUidInt;
+		const viewerIsAdmin = !!viewerContext.isAdmin;
+
+		if (viewerIsOwner || viewerIsAdmin) {
+			appendAnonymousLabel(postData.user);
+			return;
+		}
+
+		postData.user.username = 'Anonymous';
+		postData.user.displayname = 'Anonymous';
+		postData.user.userslug = '';
+		postData.user.picture = '';
+		postData.user['icon:bgColor'] = '#6c757d';
+		postData.user['icon:text'] = 'A';
+		if (Object.prototype.hasOwnProperty.call(postData.user, 'fullname')) {
+			postData.user.fullname = 'Anonymous';
+		}
+	};
+
+	function appendAnonymousLabel(userData) {
+		const suffix = ' (Anonymous)';
+		const fields = ['username', 'displayname', 'fullname'];
+
+		fields.forEach((field) => {
+			if (typeof userData[field] !== 'string') {
+				return;
+			}
+			if (userData[field].endsWith(suffix)) {
+				return;
+			}
+			userData[field] = `${userData[field]}${suffix}`;
+		});
+	}
+
 	async function checkGroupMembership(uid, groupTitleArray) {
 		if (!Array.isArray(groupTitleArray) || !groupTitleArray.length) {
 			return null;
