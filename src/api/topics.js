@@ -153,6 +153,15 @@ topicsAPI.unpin = async function (caller, data) {
 	});
 };
 
+topicsAPI.endorse = async (caller, { tids }) => {
+	await doTopicAction('endorse', 'event:topic_endorsed', caller, { tids });
+};
+
+topicsAPI.unendorse = async (caller, { tids }) => {
+	await doTopicAction('unendorse', 'event:topic_unendorsed', caller, { tids });
+};
+
+
 topicsAPI.lock = async function (caller, data) {
 	await doTopicAction('lock', 'event:topic_locked', caller, {
 		tids: data.tids,

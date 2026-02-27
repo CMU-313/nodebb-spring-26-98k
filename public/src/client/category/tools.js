@@ -62,7 +62,7 @@ define('forum/category/tools', [
 		});
 
 		components.get('topic/unendorse').on('click', function () {
-			categoryCommand('del', '/unendorse', 'unendorse', onCommandComplete);
+			categoryCommand('del', '/endorse', 'unendorse', onCommandComplete);
 			return false;
 		});
 
@@ -225,6 +225,7 @@ define('forum/category/tools', [
 		const areAllDeleted = areAll(isTopicDeleted, tids);
 		const isAnyPinned = isAny(isTopicPinned, tids);
 		const isAnyLocked = isAny(isTopicLocked, tids);
+		const isAnyEndorsed = isAny(isTopicEndorsed, tids);
 		const isAnyScheduled = isAny(isTopicScheduled, tids);
 		const areAllScheduled = areAll(isTopicScheduled, tids);
 
@@ -237,6 +238,8 @@ define('forum/category/tools', [
 
 		components.get('topic/pin').toggleClass('hidden', areAllScheduled || isAnyPinned);
 		components.get('topic/unpin').toggleClass('hidden', areAllScheduled || !isAnyPinned);
+		components.get('topic/endorse').toggleClass('hidden', isAnyEndorsed);
+		components.get('topic/unendorse').toggleClass('hidden', !isAnyEndorsed);
 
 		components.get('topic/merge').toggleClass('hidden', isAnyScheduled);
 	}
@@ -269,6 +272,10 @@ define('forum/category/tools', [
 
 	function isTopicPinned(tid) {
 		return getTopicEl(tid).hasClass('pinned');
+	}
+
+	function isTopicEndorsed(tid) {
+		return getTopicEl(tid).hasClass('endorsed');
 	}
 
 	function isTopicScheduled(tid) {

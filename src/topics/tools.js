@@ -158,28 +158,43 @@ module.exports = function (Topics) {
 		return tids.filter(Boolean);
 	};
 
-	async function (tid, uid, endorse) {
+	async function toggleEndorse(tid, uid, endorse) {
 		const topicData = await Topics.getTopicData(tid);
+		
 		if (!topicData) {
 			throw new Error('[[error:no-topic]]');
-		}
-	
-		// optional: you can allow/disallow endorsing scheduled topics
-		if (topicData.scheduled) {
-			throw new Error('[[error:invalid-data]]');
 		}
 	
 		// same permission logic as pin/unpin
 		if (uid !== 'system' && !await privileges.topics.isAdminOrMod(tid, uid)) {
 			throw new Error('[[error:no-privileges]]');
 		}
-	
-		const results = await Promise.all([
+
+		//const cid = topicData.cid;
+		const { cid } = topicData;
+		const now = Date.now();
+		
+		const promises = [
 			Topics.setTopicField(tid, 'endorsed', endorse ? 1 : 0),
 			Topics.events.log(tid, { type: endorse ? 'endorse' : 'unendorse', uid }),
-		]);
+		];
 	
-		// add the state into returned object (frontend depends on this)
+
+		if (endorse) {
+			promises.push(
+				//Topics.setTopicField(tid, 'endorsed', 1),
+				db.sortedSetAdd(`cid:${cid}:tids:endorsed`, now, tid)
+			);
+		} else {
+			promises.push(
+				//Topics.setTopicField(tid, 'endorsed', 0),
+				Topics.deleteTopicField(tid, 'endorsed'),
+				db.sortedSetRemove(`cid:${cid}:tids:endorsed`, tid)
+			);
+		}
+		const results = await Promise.all(promises);
+	
+		topicData.isEndorsed = endorse;
 		topicData.endorsed = endorse;
 		topicData.events = results[1];
 	
