@@ -325,3 +325,113 @@ async function cidFromQuery(query) {
 	}
 	return null;
 }
+
+// stores the flag of staff only at creation time to know if it is enabled/disabled
+plugin.storeStaffOnly = async function (hookData) {
+	const { post, data } = hookData;
+	const value = data && data.staffOnly ? 1 : 0;
+	await posts.setPostField(post.pid, 'staffOnly', value);
+	return hookData;
+};
+
+plugin.filterStaffOnly = async function (hookData) {
+	const { posts: postList, uid } = hookData;
+	const viewerUid = parseInt(uid, 10) || 0;
+
+	if (!Array.isArray(postList) || !postList.length) {
+		return hookData;
+	}
+
+	// Get pids in the SAME order as postList
+	const pids = postList.map(p => p && p.pid).filter(Boolean);
+
+	// Fetch staffOnly flags (order matches pids)
+	const staffOnlyRows = await posts.getPostsFields(pids, ['staffOnly', 'uid', 'cid']);
+
+	// Build a pid -> staffOnly map
+	const staffOnlyByPid = new Map();
+	staffOnlyRows.forEach((row, idx) => {
+		if (!row) return;
+		staffOnlyByPid.set(pids[idx], parseInt(row.staffOnly, 10) || 0);
+	});
+
+	const isAdmin = viewerUid ? await user.isAdministrator(viewerUid) : false;
+	const modCache = new Map();
+
+	async function isAdminOrModForCid(cid) {
+		if (isAdmin) return true;
+		if (!viewerUid) return false;
+		const key = String(cid || '');
+		if (modCache.has(key)) return modCache.get(key);
+		const ok = await privileges.categories.isAdminOrMod(cid, viewerUid);
+		modCache.set(key, ok);
+		return ok;
+	}
+
+	const filtered = [];
+	for (const p of postList) {
+		if (!p) {
+			filtered.push(p);
+			continue;
+		}
+
+		const staffOnly = staffOnlyByPid.get(p.pid) || 0;
+		if (!staffOnly) {
+			filtered.push(p);
+			continue;
+		}
+
+		// allow author
+		if (viewerUid && parseInt(p.uid, 10) === viewerUid) {
+			filtered.push(p);
+			continue;
+		}
+
+		// allow admin/mod
+		if (await isAdminOrModForCid(p.cid)) {
+			filtered.push(p);
+			continue;
+		}
+
+		// hide from everyone else
+		continue;
+	}
+
+	hookData.posts = filtered;
+	return hookData;
+};
+
+plugin.filterStaffOnlyTitle = async function (hookData) {
+	const { topic, uid } = hookData;
+	const viewerUid = parseInt(uid, 10) || 0;
+
+	if (!topic || !topic.tid || !topic.mainPid) {
+		return hookData;
+	}
+
+	// Get main post of this topic with staffOnly field
+	const mainPost = await posts.getPostsFields([topic.mainPid], ['staffOnly', 'uid']);
+	if (!mainPost || !mainPost.length) {
+		return hookData;
+	}
+
+	const staffOnly = parseInt(mainPost[0].staffOnly, 10) || 0;
+	if (!staffOnly) {
+		return hookData;
+	}
+
+	// Allow author
+	if (viewerUid && parseInt(mainPost[0].uid, 10) === viewerUid) {
+		return hookData;
+	}
+
+	// Allow admin
+	const isAdmin = viewerUid ? await user.isAdministrator(viewerUid) : false;
+	if (isAdmin) {
+		return hookData;
+	}
+
+	// Otherwise redact
+	topic.title = '[Post is Staff Only]';
+	return hookData;
+};

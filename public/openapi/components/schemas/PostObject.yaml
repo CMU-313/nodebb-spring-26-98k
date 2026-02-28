@@ -171,6 +171,10 @@ PostDataObject:
         tid:
           type: number
           description: A topic identifier
+        staffOnly:
+          type: string
+          enum: ["0", "1"]
+          description: Whether this post/topic is staff-only
         isAnonymous:
           type: string
           description: Whether the post was authored anonymously ("1" or "0")
