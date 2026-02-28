@@ -511,3 +511,75 @@ This coverage is sufficient for the implemented change set because it validates:
   - public post turning anonymous after refresh
   - identity bleed across posts sharing same author object
 - **API-level behavior** instead of only helper-level behavior, ensuring end-to-end correctness for the feature’s most critical flows.
+
+
+# Endorse Topic Feature - User Guide (Lilly Yang)
+
+##Overview
+
+This feature enables course instructors to mark topics as endorsed, helping students to identify which discussions are valuable to look at.
+
+##How to use the endorse post feature?
+
+1. Viewing the endorsed status:
+Viewing the list of topics from the home page to know the topic’s endorse status: A topic is endorsed if there is a green box containing a star and labeled “endorsed” under the title, else it’s not endorsed.
+
+2. Toggle the endorse status (Administrator/ moderator accounts only):
+Click on the title of the topic to navigate to its content page. Find the “Topic Tools” button on the list of options on the right side of the topic description. Click on “Topic Tools” to open the drop down menu and find “Endorse Topic” or “”Unendorse Topic” (the 3rd button from the top). Click on the “Endorse/Unendorse Topic” button to toggle the endorse state of the post.
+
+3. Viewing the new endorsed status:
+If the endorse state of the topic is updated successfully, there is a notification message at the botton right corner indicating “Success Topic marked as endorsed/ unendorsed.” Then, the updated state is reflected by the “endorsed” star icon on the home page and persists upon refreshing the page.
+
+## Setup / Running Locally
+
+Use the standard NodeBB dev workflow in the repo root.
+
+#Run NodeBB locally
+
+1. Install dependencies:
+    * npm install
+2. Build assets:
+    * ./nodebb build
+3. Start server:
+    * ./nodebb start
+4. Check status:
+    * ./nodebb status
+
+#After code changes
+
+* Rebuild and restart to ensure the template/client/backend changes are loaded: ./nodebb stop, ./nodebb build and ./nodebb start
+
+##How to User-Test the Feature
+To user-test the endorse topic feature, use an admin and a non-admin account.
+1. From either account, create a topic to find the endorse state originally not set.
+2. Then, using the admin account, go to the topic’s content page and click on the Endorse Topic button in the Topic Tools drop down menu.
+3. From the admin’s account, view the “Success Topic marked as endorsed” message on the bottom right corner.
+4. From either account, return to the home page to view the endorsed icon on the cover of the topic.
+5. Using the admin account, go to the topic’s content page and click on the Unendorse Topic button in the Topic Tools drop down menu.
+6. From the admin’s account, view the “Success Topic marked as unendorsed” message on the bottom right corner.
+7. From either account, return to the home page to view that the endorsed icon has been removed from the cover of the topic.
+
+##Expected Behavior and Edge Case
+
+1. False-like value when the state is unendorsed:
+    * Expected stored value: topicData.endorse == undefined
+2. True-like value when the state is endorsed:
+    * Expected stored value: topicData.endorse == ‘1’
+3. Default state: the endorsed state starts as unendorsed when a new post is created
+
+##Automated Testing
+
+#Exact file path:
+* New feature test is in test/topics.js
+* Test block name: it('should endorse topic', async () => { … }} ;
+What is being tested: When the topic state is endorsed, topics.getTopicField(newTopic.tid, 'endorsed') == ‘1’
+
+Note: when the topic state is unendorsed, the topic field is deleted (as the endorse feature behaves like a presence flag), so topics.getTopicField(newTopic.tid, 'endorsed' has an undefined value and therefore no assertion can be written as a test.
+
+The OpenAPI contract was also updated to document the  new API route: /api/v3/topics/{tid}/endorse in the schema docs.
+* public/openapi/write.yaml
+* public/openapi/write/topics/tid/endorse.yaml
+
+##Why this coverage is sufficient
+
+The coverage is sufficient for the implementated change set because it validates the data correctness for the true-like values for the topic field when the Endorse Topic flag is asserted. The Endorse Topic flag cannot be checked with an assertion because the topic field is removed when the state is not asserted.
