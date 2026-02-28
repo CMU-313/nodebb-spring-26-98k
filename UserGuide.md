@@ -580,3 +580,23 @@ The OpenAPI contract was also updated to document the  new API route: /api/v3/to
 ## Why this coverage is sufficient
 The coverage is sufficient for the implementated change set because it validates the data correctness for the true-like values for the topic field when the Endorse Topic flag is asserted. The Endorse Topic flag cannot be checked with an assertion because the topic field is removed when the state is not asserted.
 
+# Staff Only Post Function (Lata) 
+# Features Implemented # Sprint 1 
+# Front end up and rerouting vendor 
+# Sprint 2 
+# Backend and front end updated the UI tiggle for colors and implemted all of the backend for how the button works 
+# This feature allows staff and students to mark posts as staff only by clicking 
+# a button that is stated as staff only this button cnaged color indicaing that it is enabled/not enabled 
+# if enabled posts will only be avalible for staff and that students other students when trying to click on it with see a [post if staff only notice] 
+## How to User-Test the Feature 
+## Use 3 accounts:
+## User 1: creates staff-only and public posts ## User 2: non-admin, viewer ## Admin: administrator account ## Checklist 1: StaffOnly reply creation ## As User 1, create an Staff-only reply. 
+## View as user 2 ## View as User 1 ## View as Admin. 
+## Expected: User 2 sees that there is a post published but once clicked on it there is a note stating that the post is Staff Only.User 1 sees full post.Admin sees full post 
+## Checklist 2: Button Toggles ## As User 1, create an non-Staff-only reply. 
+## View as user 2 ## View as User 1 ## View as Admin. 
+## Expected: User 2 sees the full post.User 1 sees full post.Admin sees full post 
+## Checklist 3: ## As User 1, create an non-Staff-only reply. 
+## View as user 2
+## View as User 1 ## View as Admin.
+## Expected: User 2 sees the full post.User 1 sees full post.Admin sees full post
