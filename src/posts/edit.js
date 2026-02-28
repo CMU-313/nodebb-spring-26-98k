@@ -210,6 +210,11 @@ module.exports = function (Posts) {
 			editor: data.uid,
 		};
 
+		if (Object.prototype.hasOwnProperty.call(data, 'isAnonymous')) {
+			const isAnonymous = data.isAnonymous === true || data.isAnonymous === 'true' || Number(data.isAnonymous) === 1;
+			editPostData.isAnonymous = isAnonymous ? 1 : 0;
+		}
+
 		// For posts in scheduled topics, if edited before, use edit timestamp
 		editPostData.edited = topicData.scheduled ? (postData.edited || postData.timestamp) + 1 : Date.now();
 

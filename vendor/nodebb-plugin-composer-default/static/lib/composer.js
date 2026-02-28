@@ -202,6 +202,7 @@ define('composer', [
 			body: data.body || '',
 			tags: data.tags || [],
 			thumbs: data.thumbs || [],
+			isAnonymous: !!data.isAnonymous,
 			modified: !!((data.title && data.title.length) || (data.body && data.body.length)),
 			isMain: true,
 		};
@@ -277,6 +278,7 @@ define('composer', [
 				toPid: data.toPid,
 				title: data.title,
 				body: translated,
+				isAnonymous: !!data.isAnonymous,
 				modified: !!(translated && translated.length),
 				isMain: false,
 			});
@@ -344,6 +346,7 @@ define('composer', [
 		formatting.addHandler(postContainer);
 		formatting.addComposerButtons();
 		preview.handleToggler(postContainer);
+		handleAnonymous(postContainer, post_uuid);
 		postQueue.showAlert(postContainer, postData);
 		uploads.initialize(post_uuid);
 		tags.init(postContainer, composer.posts[post_uuid]);
@@ -655,6 +658,51 @@ define('composer', [
 		});
 	}
 
+	function updateAnonymousButton(postContainer, isAnonymous) {
+		const anonymousBtn = postContainer.find('[data-action="anonymous"]');
+		anonymousBtn.toggleClass('active', !!isAnonymous);
+		anonymousBtn.toggleClass('text-bg-primary', !!isAnonymous);
+		anonymousBtn.toggleClass('text-body', !isAnonymous);
+		anonymousBtn.toggleClass('fw-bold', !!isAnonymous);
+		anonymousBtn.attr('aria-pressed', !!isAnonymous);
+	}
+
+	function logAnonymousState(context, post_uuid, postData, composerData) {
+		const debugData = {
+			context: context,
+			post_uuid: post_uuid,
+			action: postData && postData.action,
+			isAnonymous: !!(postData && postData.isAnonymous),
+			composerData: composerData ? {
+				uuid: composerData.uuid,
+				pid: composerData.pid,
+				tid: composerData.tid,
+				isAnonymous: !!composerData.isAnonymous,
+			} : undefined,
+		};
+
+		console.info('[composer][anonymous]', debugData);
+	}
+
+	function handleAnonymous(postContainer, post_uuid) {
+		const anonymousBtn = postContainer.find('[data-action="anonymous"]');
+		if (!anonymousBtn.length) {
+			return;
+		}
+
+		composer.posts[post_uuid].isAnonymous = !!composer.posts[post_uuid].isAnonymous;
+		updateAnonymousButton(postContainer, composer.posts[post_uuid].isAnonymous);
+		logAnonymousState('init', post_uuid, composer.posts[post_uuid]);
+
+		anonymousBtn.on('click', function (e) {
+			e.preventDefault();
+			composer.posts[post_uuid].isAnonymous = !composer.posts[post_uuid].isAnonymous;
+			composer.posts[post_uuid].modified = true;
+			updateAnonymousButton(postContainer, composer.posts[post_uuid].isAnonymous);
+			logAnonymousState('toggle', post_uuid, composer.posts[post_uuid]);
+		});
+	}
+
 	function activate(post_uuid) {
 		if (composer.active && composer.active !== post_uuid) {
 			composer.minimize(composer.active);
@@ -749,6 +797,7 @@ define('composer', [
 			composerData = {
 				...composerData,
 				handle: handleEl ? handleEl.val() : undefined,
+				isAnonymous: !!postData.isAnonymous,
 				title: titleEl.val(),
 				content: bodyEl.val(),
 				thumb: thumbEl.val() || '',
@@ -765,6 +814,7 @@ define('composer', [
 				...composerData,
 				tid: postData.tid,
 				handle: handleEl ? handleEl.val() : undefined,
+				isAnonymous: !!postData.isAnonymous,
 				content: bodyEl.val(),
 				toPid: postData.toPid,
 			};
@@ -777,6 +827,7 @@ define('composer', [
 				...composerData,
 				pid: postData.pid,
 				handle: handleEl ? handleEl.val() : undefined,
+				isAnonymous: !!postData.isAnonymous,
 				content: bodyEl.val(),
 				title: titleEl.val(),
 				thumbs: postData.thumbs || [],
@@ -784,6 +835,8 @@ define('composer', [
 				timestamp: scheduler.getTimestamp(),
 			};
 		}
+
+		logAnonymousState('submit', post_uuid, postData, composerData);
 		var submitHookData = {
 			composerEl: postContainer,
 			action: action,

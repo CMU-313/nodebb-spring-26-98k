@@ -148,6 +148,8 @@ paths:
     $ref: 'write/topics/tid/lock.yaml'
   /topics/{tid}/pin:
     $ref: 'write/topics/tid/pin.yaml'
+  /topics/{tid}/endorse:
+    $ref: 'write/topics/tid/endorse.yaml'
   /topics/{tid}/follow:
     $ref: 'write/topics/tid/follow.yaml'
   /topics/{tid}/ignore:
@@ -170,6 +172,8 @@ paths:
     $ref: 'write/topics/tid/move.yaml'
   /topics/{tid}/crossposts:
     $ref: 'write/topics/tid/crossposts.yaml'
+  /topics/{tid}/status:
+    $ref: 'write/topics/tid/status.yaml'
   /tags/{tag}/follow:
     $ref: 'write/tags/tag/follow.yaml'
   /posts/{pid}:

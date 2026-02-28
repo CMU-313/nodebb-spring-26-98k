@@ -14,7 +14,7 @@ Sockets.push = async function (socket, pid) {
 		throw new Error('[[error:no-privileges]]');
 	}
 
-	const postData = await posts.getPostFields(pid, ['content', 'sourceContent', 'tid', 'uid', 'handle', 'timestamp']);
+	const postData = await posts.getPostFields(pid, ['content', 'sourceContent', 'tid', 'uid', 'handle', 'timestamp', 'isAnonymous']);
 	if (!postData && !postData.content) {
 		throw new Error('[[error:invalid-pid]]');
 	}
@@ -27,11 +27,13 @@ Sockets.push = async function (socket, pid) {
 	if (!topic) {
 		throw new Error('[[error:no-topic]]');
 	}
+	const isAnonymous = Number(postData.isAnonymous) === 1;
 
 	const result = await plugins.hooks.fire('filter:composer.push', {
 		pid: pid,
 		uid: postData.uid,
 		handle: parseInt(meta.config.allowGuestHandles, 10) ? postData.handle : undefined,
+		isAnonymous: isAnonymous,
 		body: postData.sourceContent || postData.content,
 		title: topic.title,
 		thumbs: topic.thumbs,

@@ -1,0 +1,61 @@
+put:
+  tags:
+    - topics
+  summary: Update topic status
+  description: Updates the status of a topic (unanswered/answered/resolved)
+  parameters:
+    - in: path
+      name: tid
+      required: true
+      schema:
+        type: integer
+      description: Topic ID
+      example: 1
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - unanswered
+                - answered
+                - resolved
+              description: The new status for the topic
+          required:
+            - status
+  responses:
+    "200":
+      description: Status updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: ok
+                  message:
+                    type: string
+                    example: OK
+              response:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                      - unanswered
+                      - answered
+                      - resolved
+    "400":
+      description: Bad request - invalid status value
+    "403":
+      description: Forbidden - user lacks edit permissions
+    "404":
+      description: Topic not found

@@ -433,3 +433,13 @@ chatsAPI.unpinMessage = async (caller, { roomId, mid }) => {
 	await messaging.canPin(roomId, caller.uid);
 	await messaging.unpinMessage(mid, roomId);
 };
+
+chatsAPI.endorseMessage = async (caller, { roomId, mid }) => {
+	await messaging.canEndorse(roomId, caller.uid);
+	await messaging.endorseMessage(mid, roomId);
+};
+
+chatsAPI.unendorseMessage = async (caller, { roomId, mid }) => {
+	await messaging.canEndorse(roomId, caller.uid);
+	await messaging.unendorseMessage(mid, roomId);
+};

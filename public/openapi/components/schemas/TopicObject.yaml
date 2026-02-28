@@ -101,6 +101,9 @@ TopicObject:
               description: A user identifier
             timestamp:
               type: number
+            isAnonymous:
+              type: string
+              description: Whether the post was authored anonymously ("1" or "0")
             tid:
               type: number
               description: A topic identifier
@@ -263,6 +266,13 @@ TopicObjectSlim:
           type: number
         votes:
           type: number
+        status:
+          type: string
+          description: Question status indicator (unanswered/answered/resolved)
+          enum:
+            - unanswered
+            - answered
+            - resolved
         teaserPid:
           oneOf:
             - type: number

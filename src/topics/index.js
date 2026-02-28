@@ -95,13 +95,33 @@ Topics.getTopicsByTids = async function (tids, options) {
 			return data;
 		}
 
-		const [teasers, users, userSettings, categoriesData, guestHandles, thumbs] = await Promise.all([
+		async function loadMainPostAnonymityByTid() {
+			const mainPids = topics
+				.map(topic => topic && topic.mainPid)
+				.filter(Boolean);
+			if (!mainPids.length) {
+				return {};
+			}
+
+			const mainPosts = await posts.getPostsFields(mainPids, ['tid', 'isAnonymous']);
+			const anonymousByTid = {};
+			mainPosts.forEach((post) => {
+				if (!post || !post.tid) {
+					return;
+				}
+				anonymousByTid[post.tid] = Number(post.isAnonymous) === 1;
+			});
+			return anonymousByTid;
+		}
+
+		const [teasers, users, userSettings, categoriesData, guestHandles, thumbs, anonymousByTid] = await Promise.all([
 			Topics.getTeasers(topics, options),
 			user.getUsersFields(uids, ['uid', 'username', 'fullname', 'userslug', 'reputation', 'postcount', 'picture', 'signature', 'banned', 'status']),
 			loadShowfullnameSettings(),
 			categories.getCategoriesFields(cids, ['cid', 'name', 'slug', 'icon', 'backgroundImage', 'imageClass', 'bgColor', 'color', 'disabled']),
 			loadGuestHandles(),
 			Topics.thumbs.load(topics),
+			loadMainPostAnonymityByTid(),
 		]);
 
 		users.forEach((userObj, idx) => {
@@ -118,15 +138,17 @@ Topics.getTopicsByTids = async function (tids, options) {
 			categoriesMap: _.zipObject(cids, categoriesData),
 			tidToGuestHandle: _.zipObject(guestTopics.map(t => t.tid), guestHandles),
 			thumbs,
+			anonymousByTid,
 		};
 	}
 
-	const [result, hasRead, followData, bookmarks, callerSettings] = await Promise.all([
+	const [result, hasRead, followData, bookmarks, callerSettings, viewerIsAdmin] = await Promise.all([
 		loadTopics(),
 		Topics.hasReadTopics(tids, uid),
 		Topics.getFollowData(tids, uid),
 		Topics.getUserBookmarks(tids, uid),
 		user.getSettings(uid),
+		parseInt(uid, 10) > 0 ? user.isAdministrator(uid) : false,
 	]);
 
 	const sortNewToOld = callerSettings.topicPostSort === 'newest_to_oldest';
@@ -134,7 +156,14 @@ Topics.getTopicsByTids = async function (tids, options) {
 		if (topic) {
 			topic.thumbs = result.thumbs[i];
 			topic.category = result.categoriesMap[topic.cid];
-			topic.user = topic.uid ? result.usersMap[topic.uid] : { ...result.usersMap[topic.uid] };
+			topic.user = { ...(result.usersMap[topic.uid] || {}) };
+			if (result.anonymousByTid[topic.tid]) {
+				posts.applyAnonymousHandle({
+					isAnonymous: 1,
+					uid: topic.uid,
+					user: topic.user,
+				}, uid, { isAdmin: viewerIsAdmin });
+			}
 			if (result.tidToGuestHandle[topic.tid]) {
 				topic.user.username = validator.escape(result.tidToGuestHandle[topic.tid]);
 				topic.user.displayname = topic.user.username;
@@ -329,6 +358,28 @@ Topics.search = async function (tid, term) {
 		ids: [],
 	});
 	return Array.isArray(result) ? result : result.ids;
+};
+
+Topics.setStatus = async function (tid, status) {
+	const validStatuses = ['unanswered', 'answered', 'resolved'];
+	if (!validStatuses.includes(status)) {
+		throw new Error('[[error:invalid-status]]');
+	}
+	await Topics.setTopicField(tid, 'status', status);
+	await plugins.hooks.fire('action:topic.setStatus', { tid: tid, status: status });
+};
+
+Topics.getStatus = async function (tid) {
+	const status = await Topics.getTopicField(tid, 'status');
+	return status || 'unanswered';
+};
+
+Topics.getTopicsStatus = async function (tids) {
+	if (!Array.isArray(tids) || !tids.length) {
+		return [];
+	}
+	const topics = await Topics.getTopicsFields(tids, ['status']);
+	return topics.map(topic => topic && topic.status ? topic.status : 'unanswered');
 };
 
 require('../promisify')(Topics);

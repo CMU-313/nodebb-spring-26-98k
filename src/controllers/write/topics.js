@@ -80,6 +80,16 @@ Topics.unpin = async (req, res) => {
 	helpers.formatApiResponse(200, res);
 };
 
+Topics.endorse = async (req, res) => {
+	await api.topics.endorse(req, { tids: [req.params.tid] });
+	helpers.formatApiResponse(200, res);
+};
+
+Topics.unendorse = async (req, res) => {
+	await api.topics.unendorse(req, { tids: [req.params.tid]});
+	helpers.formatApiResponse(200, res);
+};
+
 Topics.lock = async (req, res) => {
 	await api.topics.lock(req, { tids: [req.params.tid] });
 	helpers.formatApiResponse(200, res);
@@ -234,4 +244,13 @@ Topics.uncrosspost = async (req, res) => {
 	await activitypub.out.undo.announce('uid', req.uid, req.params.tid);
 
 	helpers.formatApiResponse(200, res, { crossposts });
+};
+
+Topics.updateStatus = async (req, res) => {
+	const result = await api.topics.updateStatus(req, {
+		tid: req.params.tid,
+		status: req.body.status,
+	});
+	
+	helpers.formatApiResponse(200, res, result);
 };

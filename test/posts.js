@@ -1131,6 +1131,261 @@ describe('Post\'s', () => {
 		});
 	});
 
+	describe('Anonymous posting', () => {
+		let ownerUid;
+		let regularUid;
+		let adminUid;
+		let anonCid;
+		let anonTid;
+		let ownerUsername;
+		let ownerUserslug;
+		let oldPostQueue;
+
+		before(async () => {
+			oldPostQueue = meta.config.postQueue;
+			meta.config.postQueue = 0;
+
+			ownerUid = await user.create({ username: `anon-owner-${utils.generateUUID().slice(0, 8)}` });
+			regularUid = await user.create({ username: `anon-regular-${utils.generateUUID().slice(0, 8)}` });
+			adminUid = await user.create({ username: `anon-admin-${utils.generateUUID().slice(0, 8)}` });
+			await groups.join('administrators', adminUid);
+
+			({ cid: anonCid } = await categories.create({ name: `anon-cat-${utils.generateUUID().slice(0, 8)}` }));
+			const topicResult = await topics.post({
+				uid: ownerUid,
+				cid: anonCid,
+				title: `anon-topic-${utils.generateUUID().slice(0, 8)}`,
+				content: 'anonymous topic seed content',
+			});
+			anonTid = topicResult.topicData.tid;
+
+			const ownerData = await user.getUserFields(ownerUid, ['username', 'userslug']);
+			ownerUsername = ownerData.username;
+			ownerUserslug = ownerData.userslug;
+		});
+
+		after(() => {
+			meta.config.postQueue = oldPostQueue;
+		});
+
+		function assertMaskedIdentityDoesNotLeak(post, expectedUsername, expectedUserslug, expectedUid) {
+			const visibleIdentityText = [
+				post.user && post.user.username,
+				post.user && post.user.displayname,
+				post.user && post.user.fullname,
+				post.user && post.user.userslug,
+			].filter(Boolean).join(' ');
+
+			assert(!visibleIdentityText.includes(expectedUsername), 'masked identity leaked username');
+			assert(!visibleIdentityText.includes(expectedUserslug), 'masked identity leaked userslug');
+			assert(!visibleIdentityText.includes(String(expectedUid)), 'masked identity leaked uid');
+		}
+
+		it('#1 should normalize false-like values to stored isAnonymous=0', async () => {
+			const falseLike = [false, 'false', 0, '0', undefined];
+			for (const value of falseLike) {
+				const created = await posts.create({
+					uid: ownerUid,
+					tid: anonTid,
+					content: `false-like-${String(value)}-${utils.generateUUID()}`,
+					isAnonymous: value,
+				});
+				const stored = await posts.getPostField(created.pid, 'isAnonymous');
+				assert.strictEqual(Number(stored), 0);
+			}
+		});
+
+		it('#2 should normalize true-like values to stored isAnonymous=1', async () => {
+			const trueLike = [true, 'true', 1, '1'];
+			for (const value of trueLike) {
+				const created = await posts.create({
+					uid: ownerUid,
+					tid: anonTid,
+					content: `true-like-${String(value)}-${utils.generateUUID()}`,
+					isAnonymous: value,
+				});
+				const stored = await posts.getPostField(created.pid, 'isAnonymous');
+				assert.strictEqual(Number(stored), 1);
+			}
+		});
+
+		it('#4 applyAnonymousHandle should fully mask for regular viewer', () => {
+			const postObj = {
+				uid: ownerUid,
+				isAnonymous: 1,
+				user: {
+					username: ownerUsername,
+					displayname: ownerUsername,
+					fullname: ownerUsername,
+					userslug: ownerUserslug,
+					picture: '/uploads/fake.png',
+				},
+			};
+
+			posts.applyAnonymousHandle(postObj, regularUid, { isAdmin: false });
+
+			assert.strictEqual(postObj.user.username, 'Anonymous');
+			assert.strictEqual(postObj.user.displayname, 'Anonymous');
+			assert.strictEqual(postObj.user.fullname, 'Anonymous');
+			assert.strictEqual(postObj.user.userslug, '');
+			assert.strictEqual(postObj.user.picture, '');
+			assert.strictEqual(postObj.user['icon:text'], 'A');
+		});
+
+		it('#5 applyAnonymousHandle should show owner identity with (Anonymous)', () => {
+			const postObj = {
+				uid: ownerUid,
+				isAnonymous: 1,
+				user: {
+					username: ownerUsername,
+					displayname: ownerUsername,
+					fullname: ownerUsername,
+					userslug: ownerUserslug,
+					picture: '/uploads/fake.png',
+				},
+			};
+
+			posts.applyAnonymousHandle(postObj, ownerUid, { isAdmin: false });
+
+			assert.strictEqual(postObj.user.username, `${ownerUsername} (Anonymous)`);
+			assert.strictEqual(postObj.user.displayname, `${ownerUsername} (Anonymous)`);
+			assert.strictEqual(postObj.user.fullname, `${ownerUsername} (Anonymous)`);
+			assert.strictEqual(postObj.user.userslug, ownerUserslug);
+			assert.strictEqual(postObj.user.picture, '/uploads/fake.png');
+		});
+
+		it('#6 applyAnonymousHandle should show admin identity view with (Anonymous)', () => {
+			const postObj = {
+				uid: ownerUid,
+				isAnonymous: 1,
+				user: {
+					username: ownerUsername,
+					displayname: ownerUsername,
+					fullname: ownerUsername,
+					userslug: ownerUserslug,
+					picture: '/uploads/fake.png',
+				},
+			};
+
+			posts.applyAnonymousHandle(postObj, regularUid, { isAdmin: true });
+
+			assert.strictEqual(postObj.user.username, `${ownerUsername} (Anonymous)`);
+			assert.strictEqual(postObj.user.displayname, `${ownerUsername} (Anonymous)`);
+			assert.strictEqual(postObj.user.fullname, `${ownerUsername} (Anonymous)`);
+			assert.strictEqual(postObj.user.userslug, ownerUserslug);
+			assert.strictEqual(postObj.user.picture, '/uploads/fake.png');
+		});
+
+		it('#7 should not bleed anonymous identity across posts by same author', async () => {
+			const anonymousReply = await apiTopics.reply({ uid: ownerUid }, {
+				tid: anonTid,
+				content: `anon-bleed-a-${utils.generateUUID()}`,
+				isAnonymous: true,
+			});
+			const publicReply = await apiTopics.reply({ uid: ownerUid }, {
+				tid: anonTid,
+				content: `anon-bleed-b-${utils.generateUUID()}`,
+				isAnonymous: false,
+			});
+
+			const summaries = await posts.getPostSummaryByPids([anonymousReply.pid, publicReply.pid], regularUid, {
+				stripTags: false,
+				parse: false,
+			});
+			const byPid = Object.fromEntries(summaries.map(post => [String(post.pid), post]));
+
+			assert.strictEqual(byPid[String(anonymousReply.pid)].user.username, 'Anonymous');
+			assert.strictEqual(byPid[String(anonymousReply.pid)].user.userslug, '');
+			assert.strictEqual(byPid[String(publicReply.pid)].user.username, ownerUsername);
+			assert.strictEqual(byPid[String(publicReply.pid)].user.userslug, ownerUserslug);
+		});
+
+		it('#9 API reply create anonymous should persist and render masked for regular, labeled for owner', async () => {
+			const reply = await apiTopics.reply({ uid: ownerUid }, {
+				tid: anonTid,
+				content: `anon-api-reply-${utils.generateUUID()}`,
+				isAnonymous: true,
+			});
+
+			const stored = await posts.getPostField(reply.pid, 'isAnonymous');
+			assert.strictEqual(Number(stored), 1);
+
+			const regularSummary = (await posts.getPostSummaryByPids([reply.pid], regularUid, {
+				stripTags: false,
+				parse: false,
+			}))[0];
+			assert.strictEqual(regularSummary.user.username, 'Anonymous');
+			assert.strictEqual(regularSummary.user.displayname, 'Anonymous');
+			assert.strictEqual(regularSummary.user.userslug, '');
+			assert.strictEqual(regularSummary.user.picture, '');
+			assertMaskedIdentityDoesNotLeak(regularSummary, ownerUsername, ownerUserslug, ownerUid);
+
+			const ownerSummary = (await posts.getPostSummaryByPids([reply.pid], ownerUid, {
+				stripTags: false,
+				parse: false,
+			}))[0];
+			assert.strictEqual(ownerSummary.user.username, `${ownerUsername} (Anonymous)`);
+			assert.strictEqual(ownerSummary.user.displayname, `${ownerUsername} (Anonymous)`);
+			assert.strictEqual(ownerSummary.user.userslug, ownerUserslug);
+		});
+
+		it('#10 API edit should toggle anonymity and rendered identity should follow', async () => {
+			const reply = await apiTopics.reply({ uid: ownerUid }, {
+				tid: anonTid,
+				content: `anon-edit-base-${utils.generateUUID()}`,
+				isAnonymous: false,
+			});
+
+			let regularSummary = (await posts.getPostSummaryByPids([reply.pid], regularUid, {
+				stripTags: false,
+				parse: false,
+			}))[0];
+			assert.strictEqual(regularSummary.user.username, ownerUsername);
+			assert.strictEqual(regularSummary.user.userslug, ownerUserslug);
+
+			await apiPosts.edit({ uid: ownerUid }, {
+				pid: reply.pid,
+				content: `anon-edit-on-${utils.generateUUID()}`,
+				isAnonymous: true,
+			});
+
+			regularSummary = (await posts.getPostSummaryByPids([reply.pid], regularUid, {
+				stripTags: false,
+				parse: false,
+			}))[0];
+			assert.strictEqual(regularSummary.user.username, 'Anonymous');
+			assert.strictEqual(regularSummary.user.userslug, '');
+			assertMaskedIdentityDoesNotLeak(regularSummary, ownerUsername, ownerUserslug, ownerUid);
+
+			let ownerSummary = (await posts.getPostSummaryByPids([reply.pid], ownerUid, {
+				stripTags: false,
+				parse: false,
+			}))[0];
+			assert.strictEqual(ownerSummary.user.username, `${ownerUsername} (Anonymous)`);
+			assert.strictEqual(ownerSummary.user.userslug, ownerUserslug);
+
+			await apiPosts.edit({ uid: ownerUid }, {
+				pid: reply.pid,
+				content: `anon-edit-off-${utils.generateUUID()}`,
+				isAnonymous: false,
+			});
+
+			regularSummary = (await posts.getPostSummaryByPids([reply.pid], regularUid, {
+				stripTags: false,
+				parse: false,
+			}))[0];
+			assert.strictEqual(regularSummary.user.username, ownerUsername);
+			assert.strictEqual(regularSummary.user.userslug, ownerUserslug);
+
+			ownerSummary = (await posts.getPostSummaryByPids([reply.pid], ownerUid, {
+				stripTags: false,
+				parse: false,
+			}))[0];
+			assert.strictEqual(ownerSummary.user.username, ownerUsername);
+			assert.strictEqual(ownerSummary.user.userslug, ownerUserslug);
+		});
+	});
+
 	describe('Topic Backlinks', () => {
 		let tid1;
 		before(async () => {

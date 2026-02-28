@@ -24,6 +24,9 @@ PostObject:
     uid:
       type: number
       description: A user identifier
+    isAnonymous:
+      type: string
+      description: Whether the post was authored anonymously ("1" or "0")
     timestamp:
       type: number
     deleted:
@@ -172,6 +175,9 @@ PostDataObject:
           type: string
           enum: ["0", "1"]
           description: Whether this post/topic is staff-only
+        isAnonymous:
+          type: string
+          description: Whether the post was authored anonymously ("1" or "0")
         content:
           type: string
         timestamp:

@@ -179,6 +179,7 @@ plugin.filterComposerBuild = async function (hookData) {
 	globalPrivileges['topics:tag'] = canTagTopics;
 	const cid = parseInt(req.query.cid, 10);
 	const topicTitle = topicData && topicData.title ? topicData.title.replace(/%/g, '&#37;').replace(/,/g, '&#44;') : validator.escape(String(req.query.title || ''));
+	const isAnonymous = Number(postData && postData.isAnonymous) === 1;
 	return {
 		req: req,
 		res: res,
@@ -218,6 +219,7 @@ plugin.filterComposerBuild = async function (hookData) {
 			showHandleInput: meta.config.allowGuestHandles === 1 &&
 				(req.uid === 0 || (isEditing && isGuestPost && (isAdmin || isMod))),
 			handle: postData ? postData.handle || '' : undefined,
+			isAnonymous: isAnonymous,
 			formatting: formatting,
 			isAdminOrMod: isAdmin || isMod,
 			save_id: save_id,

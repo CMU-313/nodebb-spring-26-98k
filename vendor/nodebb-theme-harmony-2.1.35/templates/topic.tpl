@@ -33,8 +33,21 @@
 		<div class="d-flex gap-2 flex-wrap flex-column flex-md-row {{{ if config.theme.centerHeaderElements }}}justify-content-center{{{ else }}}justify-content-between{{{ end }}}">
 			<div class="d-flex flex-column gap-3">
 				<h1 component="post/header" class="tracking-tight fw-semibold fs-3 mb-0 text-break {{{ if config.theme.centerHeaderElements }}}text-center{{{ end }}}">
-					<span class="topic-title" component="topic/title">{title}</span>
+					{{{ if status }}}<strong>({status})</strong> {{{ end }}}
+    				<span class="topic-title" component="topic/title">{title}</span>
 				</h1>
+				
+				<!-- Topic Status Button -->
+				{{{ if status }}}
+				<div class="mt-2">
+    				<button component="topic/mark-resolved" 
+            				class="btn btn-sm btn-primary" 
+            				type="button"
+            				data-status="{status}">
+        				<i class="fa fa-check"></i> Mark as Resolved
+    				</button>
+				</div>
+				{{{ end }}}
 
 				<div class="topic-info d-flex gap-2 align-items-center flex-wrap {{{ if config.theme.centerHeaderElements }}}justify-content-center{{{ end }}}">
 					<span component="topic/labels" class="d-flex gap-2 {{{ if (!scheduled && (!pinned && (!locked && (!icons.length && (!oldCid || (oldCid == "-1")))))) }}}hidden{{{ end }}}">
@@ -144,6 +157,96 @@
 		</div>
 	</div>
 </div>
+
+<!-- Topic Status Button Handler -->
+<script>
+(function() {
+    'use strict';
+    
+    // Wait for everything to be ready
+    function initStatusButton() {
+        // Check if jQuery is available
+        if (typeof window.$ === 'undefined' || typeof window.ajaxify === 'undefined') {
+            console.log('Waiting for dependencies...');
+            setTimeout(initStatusButton, 100);
+            return;
+        }
+        
+        console.log('Dependencies ready, initializing status button...');
+        
+        var button = document.querySelector('[component="topic/mark-resolved"]');
+        if (!button) {
+            console.log('No status button found');
+            return;
+        }
+        
+        console.log('Status button found!');
+        
+        var currentStatus = button.getAttribute('data-status');
+        console.log('Current status:', currentStatus);
+        
+        if (currentStatus === 'resolved') {
+            button.parentElement.style.display = 'none';
+            return;
+        }
+        
+        button.addEventListener('click', function() {
+            console.log('Button clicked!');
+            
+            var tid = window.ajaxify.data.tid;
+            var csrfToken = window.config.csrf_token;
+            
+            console.log('TID:', tid, 'CSRF:', csrfToken);
+            
+            button.disabled = true;
+            button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Updating...';
+            
+            fetch('/api/v3/topics/' + tid + '/status', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-csrf-token': csrfToken
+                },
+                body: JSON.stringify({ status: 'resolved' })
+            })
+            .then(function(response) {
+                console.log('Response:', response);
+                return response.json();
+            })
+            .then(function(data) {
+                console.log('Success!', data);
+                if (window.app && window.app.alertSuccess) {
+                    window.app.alertSuccess('Topic marked as resolved!');
+                } else {
+                    alert('Topic marked as resolved!');
+                }
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1000);
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+                if (window.app && window.app.alertError) {
+                    window.app.alertError('Failed to update status');
+                } else {
+                    alert('Failed to update status');
+                }
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-check"></i> Mark as Resolved';
+            });
+        });
+        
+        console.log('Click handler attached!');
+    }
+    
+    // Start initialization when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initStatusButton);
+    } else {
+        initStatusButton();
+    }
+})();
+</script>
 
 <div data-widget-area="footer">
 {{{each widgets.footer}}}
