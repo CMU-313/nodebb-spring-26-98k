@@ -7,7 +7,12 @@
 		{ "hook": "filter:config.get", "method": "appendConfig" },
 		{ "hook": "filter:composer.build", "method": "filterComposerBuild" },
 		{ "hook": "filter:admin.header.build", "method": "addAdminNavigation" },
-		{ "hook": "filter:meta.getLinkTags", "method": "addPrefetchTags" }
+		{ "hook": "filter:meta.getLinkTags", "method": "addPrefetchTags" },
+
+		{"hook": "filter:post.create", "method": "storeStaffOnly"}, 
+		{"hook": "filter:topic.getPosts", "method": "filterStaffOnly"},
+		{"hook": "filter:topic.get", "method": "filterStaffOnlyTitle"}
+
 	],
 	"scss": [
 		"./static/scss/composer.scss"

@@ -357,9 +357,11 @@ define('composer', [
 		composer.posts[post_uuid].staffOnlyEnabled = composer.posts[post_uuid].staffOnlyEnabled || false;
 		postContainer.off('click.staffOnly', '#staff-only-btn');
 		postContainer.on('click.staffOnly', '#staff-only-btn', function () {
-			// for testing if it was working console.log('staff button clicked');
+			
 			const enabled = !composer.posts[post_uuid].staffOnlyEnabled;
+			
 			composer.posts[post_uuid].staffOnlyEnabled = enabled;
+			console.log('staff button enabled =', enabled);
 
 			const btn = $(this);
 			btn.toggleClass('btn-danger', enabled);
@@ -799,6 +801,13 @@ define('composer', [
 		taskbarIconEl.removeClass('fa-plus').addClass('fa-circle-o-notch fa-spin');
 		composer.minimize(post_uuid);
 		textareaEl.prop('readonly', true);
+
+		// DEBUGING CODE
+		console.log('[staffOnly] about to submit');
+		console.log('[staffOnly] action =', action);
+		console.log('[staffOnly] route =', route);
+		console.log('[staffOnly] composerData.staffOnly =', composerData.staffOnly);
+		console.log('[staffOnly] composerData =', composerData);
 
 		api[method](route, composerData)
 			.then((data) => {

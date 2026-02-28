@@ -168,6 +168,10 @@ PostDataObject:
         tid:
           type: number
           description: A topic identifier
+        staffOnly:
+          type: string
+          enum: ["0", "1"]
+          description: Whether this post/topic is staff-only
         content:
           type: string
         timestamp:
