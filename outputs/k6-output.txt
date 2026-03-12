@@ -1,0 +1,36 @@
+
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+     execution: local
+        script: tests/k6/nodebb-smoke.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 1 max VUs, 10m30s max duration (incl. graceful stop):
+              * default: 1 iterations shared among 1 VUs (maxDuration: 10m0s, gracefulStop: 30s)
+
+
+     ✓ status is 200
+
+     checks.........................: 100.00% ✓ 1         ✗ 0
+     data_received..................: 33 kB   360 kB/s
+     data_sent......................: 80 B    872 B/s
+     http_req_blocked...............: avg=431.25µs min=431.25µs med=431.25µs max=431.25µs p(90)=431.25µs p(95)=431.25µs
+     http_req_connecting............: avg=163.2µs  min=163.2µs  med=163.2µs  max=163.2µs  p(90)=163.2µs  p(95)=163.2µs 
+     http_req_duration..............: avg=90.6ms   min=90.6ms   med=90.6ms   max=90.6ms   p(90)=90.6ms   p(95)=90.6ms  
+       { expected_response:true }...: avg=90.6ms   min=90.6ms   med=90.6ms   max=90.6ms   p(90)=90.6ms   p(95)=90.6ms  
+     http_req_failed................: 0.00%   ✓ 0         ✗ 1
+     http_req_receiving.............: avg=533.04µs min=533.04µs med=533.04µs max=533.04µs p(90)=533.04µs p(95)=533.04µs
+     http_req_sending...............: avg=172.45µs min=172.45µs med=172.45µs max=172.45µs p(90)=172.45µs p(95)=172.45µs
+     http_req_tls_handshaking.......: avg=0s       min=0s       med=0s       max=0s       p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=89.9ms   min=89.9ms   med=89.9ms   max=89.9ms   p(90)=89.9ms   p(95)=89.9ms  
+     http_reqs......................: 1       10.898386/s
+     iteration_duration.............: avg=91.57ms  min=91.57ms  med=91.57ms  max=91.57ms  p(90)=91.57ms  p(95)=91.57ms 
+     iterations.....................: 1       10.898386/s
+
+
+running (00m00.1s), 0/1 VUs, 1 complete and 0 interrupted iterations
+default ✓ [ 100% ] 1 VUs  00m00.1s/10m0s  1/1 shared iters
