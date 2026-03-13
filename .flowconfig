@@ -1,4 +1,7 @@
 [ignore]
+.*/node_modules/flow-bin/.*
+.*/node_modules/.*
+/workspaces/nodebb-spring-26-98k/flow/.*
 
 [include]
 
@@ -7,5 +10,11 @@
 [lints]
 
 [options]
+component_syntax=true
+#types_first=true
+no_flowlib=false
+#esproposal.class_instance_fields=enable
+#esproposal.class_static_fields=enable
+all=false
 
 [strict]
