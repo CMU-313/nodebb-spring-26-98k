@@ -54,6 +54,8 @@ paths:
     $ref: 'write/ping.yaml'
   /utilities/login:
     $ref: 'write/login.yaml'
+  /utilities/llm-translate:
+    $ref: 'write/llm-translate.yaml'
   /users/:
     $ref: 'write/users.yaml'
   /users/{uid}:

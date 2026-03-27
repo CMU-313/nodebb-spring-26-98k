@@ -289,6 +289,39 @@ define('forum/topic/postTools', [
 		postContainer.on('click', '[component="post/chat"]', function () {
 			openChat($(this));
 		});
+
+		postContainer.on('click', '[component="post/translate"]', async function (e) {
+			e.preventDefault();
+
+			const btn = $(this);
+			const postEl = btn.parents('[data-pid]');
+			const contentEl = postEl.find('[component="post/content"]');
+			const content = contentEl.text().trim();
+
+			if (!content) {
+				alerts.error('[[error:invalid-data]]');
+				return;
+			}
+
+			btn.addClass('disabled');
+
+			try {
+				const result = await api.post('/utilities/llm-translate', { content });
+				const translated = (result && result.translated) ? result.translated : '';
+
+				postEl.find('[component="post/translated-content"]').remove();
+
+				$('<div component="post/translated-content" class="small text-muted mt-2"></div>')
+					.text(`Translated: ${translated || '[empty response]'}`)
+					.insertAfter(contentEl);
+
+				alerts.success('Translation complete');
+			} catch (err) {
+				alerts.error(err);
+			} finally {
+				btn.removeClass('disabled');
+			}
+		});
 	}
 
 	async function onReplyClicked(button, tid) {

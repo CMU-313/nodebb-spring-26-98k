@@ -13,6 +13,8 @@ export default defineConfig([
 	{
 		ignores: [
 			'node_modules/',
+			'.archiver_shadow/',
+			'.archiver_shadow/**',
 			'.project',
 			'.vagrant',
 			'.DS_Store',

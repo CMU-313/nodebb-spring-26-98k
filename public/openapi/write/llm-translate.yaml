@@ -1,0 +1,38 @@
+post:
+  tags:
+    - utilities
+  summary: translate content via LLM provider
+  description: |
+    Accepts plain text and returns translated text from the configured LLM translation provider.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            content:
+              type: string
+              description: Source text to translate
+              example: Hello world
+  responses:
+    '200':
+      description: translation successful
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: ../components/schemas/Status.yaml#/Status
+              response:
+                type: object
+                properties:
+                  provider:
+                    type: string
+                    example: mock-llm-checkpoint
+                  translated:
+                    type: string
+                    example: '[hardcoded-translation] Hello world'
+    '400':
+      $ref: ../components/responses/400.yaml#/400
