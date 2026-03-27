@@ -31,3 +31,12 @@ Utilities.login = (req, res) => {
 
 	authenticationController.login(req, res);
 };
+
+Utilities.llmTranslate = (req, res) => {
+	const content = String(req.body.content || '').trim();
+
+	helpers.formatApiResponse(200, res, {
+		provider: 'mock-llm-checkpoint',
+		translated: `[hardcoded-translation] ${content}`,
+	});
+};
