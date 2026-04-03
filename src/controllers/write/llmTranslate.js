@@ -97,19 +97,21 @@ async function translateText(content) {
 			body: JSON.stringify(payload),
 		});
 	} catch (err) {
-		throw new Error(`Ollama request failed: ${err.message || err}`);
+		// Ollama unavailable, return original text
+		return text;
 	}
 
 	if (!response.ok) {
-		const bodyText = await response.text().catch(() => '');
-		throw new Error(`Ollama API error: ${response.status}${bodyText ? ` - ${bodyText}` : ''}`);
+		// Ollama error, return original text
+		return text;
 	}
 
 	let body;
 	try {
 		body = await response.json();
 	} catch (err) {
-		throw new Error(`Invalid Ollama JSON response: ${err.message || err}`);
+		// Invalid JSON response, return original text
+		return text;
 	}
 
 	const translated = parseOllamaResponse(body);
