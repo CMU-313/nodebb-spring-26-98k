@@ -13,7 +13,7 @@ const COMMON_ENGLISH_WORDS = new Set([
 	'into', 'year', 'your', 'good', 'some', 'could', 'them', 'see', 'other', 'than',
 	'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also', 'back',
 	'after', 'use', 'two', 'how', 'our', 'work', 'first', 'well', 'way', 'even',
-	'new', 'want', 'because', 'any', 'these', 'give', 'day', 'most', 'us'
+	'new', 'want', 'because', 'any', 'these', 'give', 'day', 'most', 'us',
 ]);
 
 function isProbablyEnglish(text) {
@@ -27,7 +27,7 @@ function isProbablyEnglish(text) {
 		return true;
 	}
 
-	const englishMatches = tokens.filter((t) => COMMON_ENGLISH_WORDS.has(t)).length;
+	const englishMatches = tokens.filter(t => COMMON_ENGLISH_WORDS.has(t)).length;
 	return englishMatches / tokens.length >= 0.3;
 }
 
