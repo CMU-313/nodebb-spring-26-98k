@@ -105,6 +105,7 @@ async function translateText(content) {
 		// Ollama error, return original text
 		return text;
 	}
+	
 
 	let body;
 	try {
