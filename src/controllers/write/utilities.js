@@ -3,6 +3,7 @@
 const user = require('../../user');
 const authenticationController = require('../authentication');
 const helpers = require('../helpers');
+const llmTranslateService = require('./llmTranslate');
 
 const Utilities = module.exports;
 
@@ -32,11 +33,23 @@ Utilities.login = (req, res) => {
 	authenticationController.login(req, res);
 };
 
-Utilities.llmTranslate = (req, res) => {
+Utilities.llmTranslate = async (req, res) => {
 	const content = String(req.body.content || '').trim();
 
-	helpers.formatApiResponse(200, res, {
-		provider: 'mock-llm-checkpoint',
-		translated: `[hardcoded-translation] ${content}`,
-	});
+	if (!content) {
+		helpers.formatApiResponse(400, res, new Error('[[error:invalid-data]]'));
+		return;
+	}
+
+	try {
+		const translated = await llmTranslateService.translateText(content);
+
+		helpers.formatApiResponse(200, res, {
+			provider: 'ollama',
+			translated,
+		});
+	} catch (err) {
+		console.error('Translation error:', err);
+		helpers.formatApiResponse(503, res, new Error(`Translation failed: ${err.message || 'Unknown error'}`));
+	}
 };
