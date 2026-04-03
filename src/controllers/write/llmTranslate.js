@@ -3,6 +3,8 @@
 const DEFAULT_OLLAMA_URL = 'http://localhost:11434';
 const DEFAULT_OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'qwen3:0.6b';
 
+
+
 const COMMON_ENGLISH_WORDS = new Set([
 	'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'I',
 	'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at',
